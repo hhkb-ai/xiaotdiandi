@@ -1,0 +1,35 @@
+:root {
+  color-scheme: light dark;
+  font-family: ui-serif, "Iowan Old Style", "Songti SC", "Noto Serif CJK SC", Georgia, serif;
+  background: #f7f3ea;
+  color: #191816;
+  --paper: #f7f3ea;
+  --ink: #191816;
+  --muted: #6f6a61;
+  --line: #ddd5c8;
+  --button: #191816;
+  --button-text: #fbf8f1;
+  --soft: #eee7dc;
+  --detail-text: #2d2a25;
+  --menu-bg: #fbf8f1;
+  --menu-hover: #efe8dc;
+  --shadow: rgba(25, 24, 22, 0.14);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    background: #1a1a1a;
+    color: #e8e4de;
+    --paper: #1a1a1a;
+    --ink: #e8e4de;
+    --muted: #9a9590;
+    --line: #3a3530;
+    --button: #e8e4de;
+    --button-text: #1a1a1a;
+    --soft: #2a2520;
+    --detail-text: #d8d4ce;
+    --menu-bg: #23211f;
+    --menu-hover: #2f2b27;
+    --shadow: rgba(0, 0, 0, 0.38);
+  }
+}

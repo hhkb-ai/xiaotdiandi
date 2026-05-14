@@ -1,0 +1,65 @@
+.keyword-section {
+  border-bottom: 1px solid var(--line);
+  padding: 24px 0;
+}
+
+.keyword-section summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.keyword-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.keyword-section summary strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--ink);
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 500;
+  line-height: 1.08;
+}
+
+.keyword-section summary > span:last-child {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: var(--muted);
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.keyword-section[open] summary > span:last-child {
+  color: var(--ink);
+}
+
+.keyword-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 22px;
+}
+
+.keyword-cloud a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 9px 12px;
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--muted);
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+}
+
+.keyword-cloud a:hover {
+  background: var(--soft);
+  color: var(--ink);
+}

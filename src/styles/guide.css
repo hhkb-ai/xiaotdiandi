@@ -1,0 +1,274 @@
+.guide-block {
+  margin: 30px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: clamp(18px, 3vw, 26px);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.guide-tldr {
+  display: grid;
+  gap: 10px;
+  background: var(--soft);
+}
+
+.guide-tldr strong {
+  max-width: 780px;
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.guide-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.guide-heading h3,
+.guide-block > div h3 {
+  margin-top: 8px;
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 1.12;
+}
+
+.guide-filter,
+.status-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.guide-filter span,
+.status-tags span,
+.service-type {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 9px;
+  color: var(--muted);
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status-tags .status-ok {
+  border-color: rgba(45, 128, 87, 0.45);
+  background: rgba(45, 128, 87, 0.12);
+  color: #2d8057;
+}
+
+.status-tags .status-warn {
+  border-color: rgba(161, 111, 35, 0.45);
+  background: rgba(161, 111, 35, 0.12);
+  color: #8a5b18;
+}
+
+.status-tags .status-need {
+  border-color: rgba(160, 70, 60, 0.45);
+  background: rgba(160, 70, 60, 0.12);
+  color: #9b4036;
+}
+
+.discount-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.discount-card {
+  display: grid;
+  gap: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--paper);
+}
+
+.discount-card-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.discount-card h4 {
+  margin-top: 8px;
+  font-size: 22px;
+  line-height: 1.18;
+}
+
+.discount-card p,
+.timeline-list p,
+.privacy-check li,
+.faq-list p,
+.update-log p {
+  margin: 0;
+  color: var(--detail-text);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.claim-link {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border: 1px solid var(--button);
+  border-radius: 6px;
+  padding: 0 12px;
+  background: var(--button);
+  color: var(--button-text);
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.discount-card dl {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.discount-card dl div {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 10px;
+}
+
+.discount-card dt,
+.discount-card dd {
+  margin: 0;
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.discount-card dt {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.discount-card dd {
+  color: var(--detail-text);
+}
+
+.guide-copy {
+  display: grid;
+  gap: 16px;
+}
+
+.guide-copy pre {
+  overflow-x: auto;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--paper);
+  white-space: pre-wrap;
+}
+
+.guide-copy code {
+  color: var(--detail-text);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.copy-guide {
+  width: fit-content;
+}
+
+.timeline-list {
+  display: grid;
+  gap: 10px;
+}
+
+.timeline-list article {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 14px;
+  margin: 0;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.timeline-list span {
+  color: var(--ink);
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.privacy-check ul {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding-left: 20px;
+}
+
+.visual-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.visual-grid article {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--paper);
+}
+
+.visual-grid article > span {
+  display: block;
+  min-height: 84px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background:
+    linear-gradient(135deg, transparent 0 48%, var(--line) 49% 51%, transparent 52%),
+    linear-gradient(45deg, transparent 0 48%, var(--line) 49% 51%, transparent 52%),
+    var(--soft);
+}
+
+.visual-grid h4 {
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.visual-grid p {
+  margin: 0;
+  color: var(--detail-text);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.visual-grid small {
+  color: var(--muted);
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.faq-list details {
+  border-top: 1px solid var(--line);
+  padding: 14px 0;
+}
+
+.faq-list summary {
+  cursor: pointer;
+  color: var(--ink);
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-weight: 700;
+}
+
+.faq-list details p {
+  margin-top: 10px;
+}
