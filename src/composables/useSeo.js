@@ -8,7 +8,7 @@ export function useSeo() {
   const { getStoryById } = useStories()
 
   function updateMeta(name, content) {
-    let el = document.querySelector(`meta[name="${name}"]`)
+    let el = document.querySelector(`meta[name="${CSS.escape(name)}"]`)
     if (!el) {
       el = document.createElement('meta')
       el.setAttribute('name', name)
@@ -18,7 +18,7 @@ export function useSeo() {
   }
 
   function updateProperty(property, content) {
-    let el = document.querySelector(`meta[property="${property}"]`)
+    let el = document.querySelector(`meta[property="${CSS.escape(property)}"]`)
     if (!el) {
       el = document.createElement('meta')
       el.setAttribute('property', property)
@@ -54,19 +54,19 @@ export function useSeo() {
 
     let config
 
+    // Fetch story once for both config and JSON-LD
+    const story = tdk === 'story' ? getStoryById(params.id) : null
+
     if (tdk === 'home') {
       config = tdkConfig.home
     } else if (tdk === 'category') {
       config = tdkConfig.category[params.category] || tdkConfig.home
-    } else if (tdk === 'story') {
-      const story = getStoryById(params.id)
-      if (story) {
-        config = {
-          title: tdkConfig.storyTemplate.title.replace('{title}', story.title),
-          description: tdkConfig.storyTemplate.description.replace('{summary}', story.summary),
-          keywords: (story.keywords || []).slice(0, 10).join(','),
-          canonical: tdkConfig.storyTemplate.canonical.replace('{id}', story.id)
-        }
+    } else if (tdk === 'story' && story) {
+      config = {
+        title: tdkConfig.storyTemplate.title.replace('{title}', story.title),
+        description: tdkConfig.storyTemplate.description.replace('{summary}', story.summary),
+        keywords: (story.keywords || []).slice(0, 10).join(','),
+        canonical: tdkConfig.storyTemplate.canonical.replace('{id}', story.id)
       }
     }
 
@@ -87,28 +87,25 @@ export function useSeo() {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
         'name': '晓点滴',
-        'url': 'https://unietalk.cn/',
+        'url': 'https://apiuspro.cn/',
         'description': config.description,
         'inLanguage': 'zh-CN',
         'potentialAction': {
           '@type': 'SearchAction',
-          'target': 'https://unietalk.cn/#stories',
+          'target': 'https://apiuspro.cn/#stories',
           'query-input': 'required name=search_term_string'
         }
       })
-    } else if (tdk === 'story') {
-      const story = getStoryById(params.id)
-      if (story) {
-        addJsonLd({
-          '@context': 'https://schema.org',
-          '@type': 'BlogPosting',
-          'headline': story.title,
-          'description': story.summary,
-          'author': { '@type': 'Person', 'name': story.author },
-          'datePublished': story.date,
-          'url': `https://unietalk.cn/story/${story.id}`
-        })
-      }
+    } else if (tdk === 'story' && story) {
+      addJsonLd({
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        'headline': story.title,
+        'description': story.summary,
+        'author': { '@type': 'Person', 'name': story.author },
+        'datePublished': story.date,
+        'url': `https://apiuspro.cn/story/${story.id}`
+      })
     }
   }
 

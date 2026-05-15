@@ -1,12 +1,11 @@
 <template>
-  <a class="skip-link" href="#stories">跳到主要内容</a>
+  <a class="skip-link" href="#stories" @click.prevent="scrollToSection('stories')">跳到主要内容</a>
   <header class="site-header">
     <router-link class="brand" to="/" aria-label="晓点滴首页">晓点滴</router-link>
     <nav class="site-nav" aria-label="主导航">
-      <a href="/#stories">故事</a>
-      <a href="/#keywords">话题</a>
-      <a href="/#submit">关于</a>
-      <a href="/#subscribe">订阅</a>
+      <a href="#stories" @click.prevent="scrollToSection('stories')">故事</a>
+      <a href="#keywords" @click.prevent="scrollToSection('keywords')">话题</a>
+      <a href="#submit" @click.prevent="scrollToSection('submit')">关于</a>
     </nav>
   </header>
 
@@ -17,12 +16,12 @@
       to="/"
       @click="applyCategory('全部')"
     >全部内容</router-link>
-    <div class="category-group category-group-campus">
+    <div class="category-group category-group-campus" :class="{ 'is-open': openGroup === 'campus' }">
       <button
         class="category-pill"
         type="button"
         :class="{ 'is-active': currentCategory === '校园日常' }"
-        @click="applyCategory('校园日常')"
+        @click.stop="toggleGroup('campus')"
       >校园日常</button>
       <div class="category-panel" aria-label="校园日常细分">
         <router-link to="/category/校园生活" @click="applyCategory('校园生活')">
@@ -39,12 +38,12 @@
         </router-link>
       </div>
     </div>
-    <div class="category-group category-group-study">
+    <div class="category-group category-group-study" :class="{ 'is-open': openGroup === 'study' }">
       <button
         class="category-pill"
         type="button"
         :class="{ 'is-active': currentCategory === '学习知识' }"
-        @click="applyCategory('学习知识')"
+        @click.stop="toggleGroup('study')"
       >学习知识</button>
       <div class="category-panel" aria-label="学习知识细分">
         <router-link to="/category/学习成长" @click="applyCategory('学习成长')">
@@ -65,12 +64,12 @@
         </router-link>
       </div>
     </div>
-    <div class="category-group category-group-safety">
+    <div class="category-group category-group-safety" :class="{ 'is-open': openGroup === 'safety' }">
       <button
         class="category-pill"
         type="button"
         :class="{ 'is-active': currentCategory === '安全情绪' }"
-        @click="applyCategory('安全情绪')"
+        @click.stop="toggleGroup('safety')"
       >安全情绪</button>
       <div class="category-panel" aria-label="安全情绪细分">
         <router-link to="/category/安全与情绪" @click="applyCategory('安全与情绪')">
@@ -93,15 +92,45 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, nextTick, ref, onMounted, onUnmounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useStories } from '@/composables/useStories'
 import { useSeo } from '@/composables/useSeo'
 
 useSeo()
 
 const route = useRoute()
+const router = useRouter()
 const { category, applyCategory } = useStories()
 
 const currentCategory = computed(() => category.value)
+const openGroup = ref(null)
+
+function toggleGroup(name) {
+  openGroup.value = openGroup.value === name ? null : name
+}
+
+function closeGroups() {
+  openGroup.value = null
+}
+
+onMounted(() => {
+  document.addEventListener('click', closeGroups)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', closeGroups)
+})
+
+function scrollToSection(sectionId) {
+  const scroll = () => {
+    const el = document.getElementById(sectionId)
+    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  }
+  if (route.path !== '/') {
+    router.push('/').then(() => nextTick(scroll))
+  } else {
+    scroll()
+  }
+}
 </script>

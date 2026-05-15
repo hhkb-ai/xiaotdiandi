@@ -14,6 +14,25 @@ const categoryGroups = {
   安全情绪: ['安全与情绪']
 }
 
+const curatedHeroIds = [13, 5, 6, 46, 34]
+const curatedQualityIds = [13, 15, 16, 5, 6, 46, 34, 44, 1, 31]
+
+function pickStoriesByIds(sourceStories, ids, limit = ids.length) {
+  const source = sourceStories || []
+  const byId = new Map(source.map(story => [story.id, story]))
+  const picked = ids.map(id => byId.get(id)).filter(Boolean)
+
+  if (picked.length >= limit) return picked.slice(0, limit)
+
+  const existingIds = new Set(picked.map(story => story.id))
+  const fallback = [...source]
+    .filter(story => !existingIds.has(story.id))
+    .sort((a, b) => (b.weight || 0) - (a.weight || 0) || new Date(b.date) - new Date(a.date))
+    .slice(0, limit - picked.length)
+
+  return [...picked, ...fallback]
+}
+
 export function useStories() {
   const filteredStories = computed(() => {
     const activeCategories = categoryGroups[category.value] || [category.value]
@@ -35,13 +54,7 @@ export function useStories() {
   })
 
   const heroStories = computed(() => {
-    const highWeight = stories.value
-      .filter(s => s.weight >= 70)
-      .sort((a, b) => b.weight - a.weight)
-    if (highWeight.length > 0) return highWeight.slice(0, 5)
-    return [...stories.value]
-      .sort((a, b) => (b.weight || 0) - (a.weight || 0))
-      .slice(0, 5)
+    return pickStoriesByIds(stories.value, curatedHeroIds, 5)
   })
 
   const latestStories = computed(() => {
@@ -51,10 +64,7 @@ export function useStories() {
   })
 
   const qualityStories = computed(() => {
-    return stories.value
-      .filter(s => s.weight >= 60)
-      .sort((a, b) => b.weight - a.weight)
-      .slice(0, 10)
+    return pickStoriesByIds(stories.value, curatedQualityIds, 10)
   })
 
   const displayStories = computed(() => {

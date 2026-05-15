@@ -1,6 +1,6 @@
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 0.86fr) minmax(360px, 1fr);
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1fr);
   gap: clamp(26px, 5vw, 60px);
   align-items: center;
   padding: clamp(30px, 5vw, 64px) 0 clamp(32px, 5vw, 58px);
@@ -38,8 +38,7 @@
 }
 
 .primary-link,
-.secondary-link,
-.subscribe-form button {
+.secondary-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -155,13 +154,13 @@
 
 .hero-carousel {
   min-width: 0;
-  min-height: 292px;
+  min-height: 240px;
   overflow: hidden;
   contain: layout paint;
 }
 
 .hero-slide-card {
-  min-height: 292px;
+  min-height: 240px;
   padding: clamp(20px, 3vw, 28px);
   background: rgba(255, 255, 255, 0.22);
 }

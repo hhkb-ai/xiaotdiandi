@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
+import CategoryView from '@/views/CategoryView.vue'
 import StoryDetailView from '@/views/StoryDetailView.vue'
 
 const routes = [
@@ -12,7 +13,7 @@ const routes = [
   {
     path: '/category/:category',
     name: 'category',
-    component: HomeView,
+    component: CategoryView,
     meta: { tdk: 'category' }
   },
   {

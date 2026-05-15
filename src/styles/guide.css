@@ -54,21 +54,21 @@
 }
 
 .status-tags .status-ok {
-  border-color: rgba(45, 128, 87, 0.45);
-  background: rgba(45, 128, 87, 0.12);
-  color: #2d8057;
+  border-color: var(--status-ok-border);
+  background: var(--status-ok-bg);
+  color: var(--status-ok);
 }
 
 .status-tags .status-warn {
-  border-color: rgba(161, 111, 35, 0.45);
-  background: rgba(161, 111, 35, 0.12);
-  color: #8a5b18;
+  border-color: var(--status-warn-border);
+  background: var(--status-warn-bg);
+  color: var(--status-warn);
 }
 
 .status-tags .status-need {
-  border-color: rgba(160, 70, 60, 0.45);
-  background: rgba(160, 70, 60, 0.12);
-  color: #9b4036;
+  border-color: var(--status-need-border);
+  background: var(--status-need-bg);
+  color: var(--status-need);
 }
 
 .discount-grid {

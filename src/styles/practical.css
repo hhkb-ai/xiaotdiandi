@@ -79,12 +79,13 @@
 .check-list li::before {
   content: "";
   position: absolute;
-  top: 0.72em;
+  top: 0.45em;
   left: 0;
-  width: 9px;
-  height: 9px;
-  border: 1px solid currentColor;
-  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+  background: transparent;
 }
 
 .keyword-tags {
@@ -98,10 +99,10 @@
 .keyword-tags button {
   display: inline-flex;
   align-items: center;
-  min-height: 38px;
+  min-height: 44px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 7px 10px;
+  padding: 8px 12px;
   font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 13px;
   line-height: 1.45;

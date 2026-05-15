@@ -17,8 +17,7 @@
   padding-top: 58px;
 }
 
-.info-body p,
-.subscribe-form p {
+.info-body p {
   max-width: 620px;
   margin: 0 0 18px;
   color: var(--muted);
@@ -30,29 +29,4 @@
   border-bottom: 1px solid currentColor;
   font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
   font-weight: 700;
-}
-
-.subscribe-form {
-  display: grid;
-  grid-template-columns: minmax(220px, 360px) auto;
-  gap: 10px;
-  align-items: start;
-}
-
-.subscribe-form input {
-  min-height: 44px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 0 14px;
-  background: rgba(255, 255, 255, 0.22);
-  outline-color: var(--ink);
-}
-
-#subscribeMessage {
-  grid-column: 1 / -1;
-  min-height: 24px;
-  margin: 2px 0 0;
-  color: var(--muted);
-  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
-  font-size: 14px;
 }
