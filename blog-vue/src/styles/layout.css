@@ -42,6 +42,7 @@
   border-bottom: 1px solid var(--line);
   background: var(--paper);
   background: color-mix(in srgb, var(--paper) 92%, transparent);
+  -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
 }
 

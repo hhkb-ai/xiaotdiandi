@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 import json
+import os
 
-# 读取 stories.json
-with open('d:/fenxxiang/renjian-story-shop/stories.json', 'r', encoding='utf-8') as f:
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+STORIES_PATH = os.path.join(SCRIPT_DIR, 'stories.json')
+
+with open(STORIES_PATH, 'r', encoding='utf-8') as f:
     stories = json.load(f)
 
 # 优化后的标题和开头段落
@@ -79,7 +82,7 @@ for story in stories:
         updated_count += 1
 
 # 保存更新后的文件
-with open('d:/fenxxiang/renjian-story-shop/stories.json', 'w', encoding='utf-8') as f:
+with open(STORIES_PATH, 'w', encoding='utf-8') as f:
     json.dump(stories, f, ensure_ascii=False, indent=2)
 
 print(f"标题和开头段落优化完成！已更新 {updated_count} 篇文章")

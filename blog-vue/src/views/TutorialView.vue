@@ -171,18 +171,28 @@ const quickSummary = computed(() => {
   return items.slice(0, 3)
 })
 
-function goBack() { = computed(() => {
+const safeExternalLinks = computed(() => {
   if (!story.value?.externalLinks) return []
   return story.value.externalLinks.filter(link => {
     if (!link.url || !link.url.startsWith('https://')) return false
     if (link.url.includes('localhost') || link.url.includes('127.0.0.1')) return false
+    if (link.url.startsWith('file://')) return false
     return true
   })
 })
 
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
 function renderMarkdown(text) {
   if (!text) return ''
-  let html = text
+  let html = escapeHtml(text)
   html = html.replace(/^### (.+)$/gm, '<h4>$1</h4>')
   html = html.replace(/^## (.+)$/gm, '<h3>$1</h3>')
   html = html.replace(/^# (.+)$/gm, '<h2>$1</h2>')

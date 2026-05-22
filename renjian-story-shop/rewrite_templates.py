@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 import json
+import os
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+STORIES_PATH = os.path.join(SCRIPT_DIR, 'stories.json')
+APP_JS_PATH = os.path.join(SCRIPT_DIR, 'app.js')
 
 # New paragraphs 4 and 5 for each story that has template content
 # Format: story_id -> [new_p4, new_p5]
@@ -249,7 +254,7 @@ rewrites = {
 
 def apply_rewrites():
     # Update stories.json
-    with open('d:/fenxxiang/renjian-story-shop/stories.json', 'r', encoding='utf-8') as f:
+    with open(STORIES_PATH, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
     updated_count = 0
@@ -263,13 +268,13 @@ def apply_rewrites():
                 s['content'] = content
                 updated_count += 1
 
-    with open('d:/fenxxiang/renjian-story-shop/stories.json', 'w', encoding='utf-8') as f:
+    with open(STORIES_PATH, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
     print(f"Updated {updated_count} stories in stories.json")
 
     # Update app.js
-    with open('d:/fenxxiang/renjian-story-shop/app.js', 'r', encoding='utf-8') as f:
+    with open(APP_JS_PATH, 'r', encoding='utf-8') as f:
         app = f.read()
 
     import re
@@ -333,7 +338,7 @@ def apply_rewrites():
 
             app = app[:p4_start] + json.dumps(new_p4, ensure_ascii=False) + app[p4_end:p5_start] + json.dumps(new_p5, ensure_ascii=False) + app[p5_end:]
 
-    with open('d:/fenxxiang/renjian-story-shop/app.js', 'w', encoding='utf-8') as f:
+    with open(APP_JS_PATH, 'w', encoding='utf-8') as f:
         f.write(app)
 
     print("Updated app.js")

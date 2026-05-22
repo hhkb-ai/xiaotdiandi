@@ -211,11 +211,20 @@ const safeExternalLinks = computed(() => {
   })
 })
 
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
 // 简单的 Markdown 解析函数
 function renderMarkdown(text) {
   if (!text) return ''
 
-  let html = text
+  let html = escapeHtml(text)
 
   // 处理标题（Markdown 格式）
   html = html.replace(/^### (.+)$/gm, '<h4>$1</h4>')
