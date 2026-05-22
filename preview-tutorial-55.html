@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>长教程布局预览 - 论文写作全流程软件指南：从选题到答辩的工具组合</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f5f0e8; color: #1a1a1a; line-height: 1.6;
+    }
+    .tutorial-view { max-width: 720px; margin: 0 auto; padding: 24px 16px 64px; }
+    @media (min-width: 640px) { .tutorial-view { padding: 32px 24px 80px; } }
+
+    /* 导航 */
+    .tutorial-nav { display: flex; align-items: center; gap: 16px; margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid #d9d0c4; }
+    .back-link { background: none; border: none; color: #6b6560; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; }
+    .nav-title { color: #6b6560; font-size: 13px; }
+
+    /* Hero */
+    .tutorial-hero { margin-bottom: 32px; }
+    .tag-pill { display: inline-flex; padding: 4px 12px; border: 1px solid #d9d0c4; border-radius: 999px; font-size: 12px; font-weight: 600; color: #1a1a1a; margin-bottom: 16px; }
+    .tutorial-title { font-size: 28px; font-weight: 700; line-height: 1.3; margin: 0 0 16px; color: #1a1a1a; }
+    .tutorial-summary { font-size: 16px; line-height: 1.7; color: #6b6560; margin: 0 0 16px; }
+    .reader-meta { display: flex; flex-wrap: wrap; gap: 12px; color: #6b6560; font-size: 13px; }
+    .reader-meta span { padding: 2px 8px; background: #ebe5d9; border-radius: 6px; }
+
+    /* BLUF */
+    .bluf-card { background: #fef3cd; border: 1px solid #e6a817; border-radius: 12px; padding: 20px 24px; margin-bottom: 32px; }
+    .bluf-label { font-size: 11px; font-weight: 700; color: #6b6560; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .bluf-text { font-size: 16px; line-height: 1.7; color: #2c2825; margin: 0; font-weight: 500; }
+
+    /* 快速结论 */
+    .quick-summary { background: #ebe5d9; border: 1px solid #d9d0c4; border-radius: 12px; padding: 20px 24px; margin-bottom: 32px; }
+    .summary-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #d9d0c4; }
+    .summary-head h3 { font-size: 16px; font-weight: 700; color: #1a1a1a; }
+    .summary-badge { font-size: 12px; color: #6b6560; background: #f5f0e8; padding: 2px 10px; border-radius: 999px; }
+    .summary-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .summary-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.7; color: #2c2825; }
+    .summary-num { display: flex; align-items: center; justify-content: center; min-width: 22px; height: 22px; background: #1a1a1a; color: #f5f0e8; border-radius: 999px; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+
+    /* 步骤目录 */
+    .step-toc { background: #f5f0e8; border: 1px solid #d9d0c4; border-radius: 12px; padding: 20px 24px; margin-bottom: 40px; }
+    .toc-label { font-size: 13px; font-weight: 700; color: #6b6560; margin-bottom: 12px; }
+    .step-toc ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+    .step-toc li { font-size: 14px; line-height: 1.5; }
+    .step-toc a { color: #6b6560; text-decoration: none; transition: color 0.2s; }
+    .step-toc a:hover { color: #1a1a1a; }
+
+    /* 正文 */
+    .tutorial-content { margin-bottom: 48px; }
+    .step-block { margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid #d9d0c4; }
+    .step-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .step-block p { font-size: 16px; line-height: 1.8; color: #2c2825; margin: 0 0 16px; }
+    .step-block h3 { font-size: 18px; font-weight: 700; margin: 0 0 12px; color: #1a1a1a; }
+    .step-block strong { color: #1a1a1a; font-weight: 700; }
+    .step-block ol, .step-block ul { margin: 12px 0; padding-left: 24px; display: flex; flex-direction: column; gap: 8px; }
+    .step-block li { font-size: 15px; line-height: 1.7; color: #2c2825; }
+
+    /* 外部链接 */
+    .link-section { background: #f5f0e8; border: 1px solid #d9d0c4; border-radius: 12px; padding: 20px 24px; margin-bottom: 24px; }
+    .section-head { margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #d9d0c4; }
+    .section-head h3 { font-size: 16px; font-weight: 700; color: #1a1a1a; }
+    .link-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .link-card { display: flex; flex-direction: column; gap: 6px; padding: 14px; background: #ebe5d9; border: 1px solid #d9d0c4; border-radius: 8px; text-decoration: none; transition: all 0.2s; }
+    .link-card:hover { border-color: #1a1a1a; box-shadow: 0 2px 8px rgba(26,26,26,0.12); }
+    .link-badge { display: inline-flex; width: fit-content; padding: 1px 6px; background: #1a1a1a; color: #f5f0e8; border-radius: 6px; font-size: 10px; font-weight: 600; text-transform: uppercase; }
+    .link-title { font-size: 14px; font-weight: 600; color: #1a1a1a; margin: 0; }
+    .link-desc { font-size: 12px; line-height: 1.5; color: #6b6560; margin: 0; }
+
+    /* 清单 */
+    .checklist-section { background: #f5f0e8; border: 1px solid #d9d0c4; border-radius: 12px; padding: 20px 24px; margin-bottom: 24px; }
+    .check-items { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .check-items li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.6; color: #2c2825; }
+    .check-icon { display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background: #1a1a1a; color: #f5f0e8; border-radius: 999px; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+
+    /* 避坑 */
+    .pitfall-section { background: #fff3cd; border: 1px solid #e6a817; border-radius: 12px; padding: 20px 24px; margin-bottom: 24px; }
+    .pitfall-items { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .pitfall-items li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.6; color: #2c2825; }
+    .pitfall-icon { display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; background: #e6a817; color: #fff; border-radius: 999px; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+
+    /* FAQ */
+    .faq-section { background: #f5f0e8; border: 1px solid #d9d0c4; border-radius: 12px; padding: 20px 24px; margin-bottom: 24px; }
+    .faq-list { display: flex; flex-direction: column; gap: 10px; }
+    .faq-item { background: #ebe5d9; border-radius: 8px; overflow: hidden; }
+    .faq-question { padding: 14px 16px; font-size: 14px; font-weight: 600; color: #1a1a1a; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+    .faq-question::-webkit-details-marker { display: none; }
+    .faq-question::after { content: "+"; font-size: 18px; color: #6b6560; }
+    .faq-item[open] .faq-question::after { content: "−"; }
+    .faq-answer { padding: 0 16px 14px; font-size: 13px; line-height: 1.7; color: #2c2825; margin: 0; }
+
+    @media (max-width: 640px) { .link-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 360px) { .tutorial-view { padding: 16px 12px 48px; } .tutorial-title { font-size: 22px; } }
+  </style>
+</head>
+<body>
+  <div class="tutorial-view">
+    <!-- 导航 -->
+    <nav class="tutorial-nav">
+      <button class="back-link">← 返回</button>
+      <span class="nav-title">学习成长</span>
+    </nav>
+
+    <!-- Hero -->
+    <header class="tutorial-hero">
+      <span class="tag-pill">学习成长</span>
+      <h1 class="tutorial-title">论文写作全流程软件指南：从选题到答辩的工具组合</h1>
+      <p class="tutorial-summary">写论文不只是用Word，从文献检索、笔记整理、写作排版到答辩PPT，每个环节都有专门的工具，组合用能省一半时间。</p>
+      <div class="reader-meta">
+        <span>5 分钟阅读</span>
+        <span>1042 字</span>
+      </div>
+    </header>
+
+    <!-- BLUF -->
+    <div class="bluf-card">
+      <div class="bluf-label">BLUF · 一句话结论</div>
+      <p class="bluf-text">论文写作分五步，每步用专门工具：知网检索→Zotero管理→Word写作→查重修改→PPT答辩。</p>
+    </div>
+
+    <!-- 快速结论 -->
+    <div class="quick-summary">
+      <div class="summary-head">
+        <h3>💡 快速结论</h3>
+        <span class="summary-badge">30秒看重点</span>
+      </div>
+      <ul class="summary-list">
+        <li><span class="summary-num">1</span><span>论文写作分五步，每步用专门工具：知网检索→Zotero管理→Word写作→查重修改→PPT答辩。</span></li>
+        <li><span class="summary-num">2</span><span>文献检索：中国知网（cnki.net）、万方数据（wanfangdata.com.cn）</span></li>
+        <li><span class="summary-num">3</span><span>文献管理：Zotero（zotero.org）免费，自动生成参考文献</span></li>
+      </ul>
+    </div>
+
+    <!-- 步骤目录 -->
+    <nav class="step-toc">
+      <div class="toc-label">本文步骤</div>
+      <ol><li><a href="#step-1">论文写作五步流程</a></li><li><a href="#step-2">第一步</a></li><li><a href="#step-3">第二步</a></li><li><a href="#step-4">第三步</a></li><li><a href="#step-5">第四步</a></li><li><a href="#step-6">第五步</a></li><li><a href="#step-7">第六步</a></li><li><a href="#step-8">常见坑</a></li>
+      </ol>
+    </nav>
+
+    <!-- 正文 -->
+    <div class="tutorial-content">
+      <div class="step-block" id="step-0">
+        <p>很多同学写论文时只用Word，结果格式调半天、参考文献对不上、图表排版乱七八糟。</p><p>其实论文写作是一个流程，每个环节都有专门的工具，组合使用效率翻倍。</p>
+      </div>
+      <div class="step-block" id="step-1">
+        <p>论文写作五步流程：第一步，文献检索和阅读；第二步，笔记整理和文献管理；第三步，论文写作和排版；第四步，查重和修改；第五步，答辩PPT制作。</p><p>每一步都有对应的工具推荐。</p>
+      </div>
+      <div class="step-block" id="step-2">
+        <p>第一步：文献检索。</p><p>中国知网（cnki.net）是国内最全的学术数据库，期刊、学位论文、会议论文都能搜到。</p><p>学校一般都买了知网授权，用校园网访问免费。</p><p>万方数据（wanfangdata.com.cn）是另一个选择，部分学校也有授权。</p><p>Google Scholar（scholar.google.com）适合搜英文文献，覆盖面最广。</p>
+      </div>
+      <div class="step-block" id="step-3">
+        <p>第二步：文献管理。</p><p>Zotero（zotero.org）是免费的文献管理神器，支持一键抓取文献信息、自动生成参考文献格式、多设备同步。</p><p>写论文时直接从知网导入文献到Zotero，写正文时用Word插件一键插入引用，参考文献自动生成，格式错误率几乎为零。</p>
+      </div>
+      <div class="step-block" id="step-4">
+        <p>第三步：笔记整理。</p><p>写论文前先把文献笔记整理好。</p><p>幕布（mubu.com）适合做大纲笔记，一键生成思维导图，论文框架一目了然。</p><p>OneNote适合做详细的文献笔记，支持手绘标注和公式插入。</p><p>Notion适合做文献数据库，可以按主题、年份、作者等维度管理。</p>
+      </div>
+      <div class="step-block" id="step-5">
+        <p>第四步：论文写作。</p><p>WPS Office是免费的选择，支持论文模板、自动目录、参考文献插入。</p><p>Microsoft Word是更专业的选择，格式兼容性最好，大部分学校要求用Word提交。</p><p>写长文档时建议用Word的样式功能，标题、正文、引用统一设置，后期修改格式省很多时间。</p>
+      </div>
+      <div class="step-block" id="step-6">
+        <p>第五步：排版和查重。</p><p>论文写完后要查重。</p><p>学校一般会提供免费的查重次数，优先用学校给的。</p><p>如果需要自己查重，PaperYY（paperyy.com）每天有一次免费机会，适合初稿自查。</p><p>维普（cqvip.com）和万方查重价格相对便宜，结果和知网差距不大。</p>
+      </div>
+      <div class="step-block" id="step-7">
+        <p>第六步：答辩PPT。</p><p>WPS和PowerPoint都有论文答辩模板，直接套用。</p><p>如果想做得更专业，Canva（canva.cn）有大量学术风格的模板，拖拽式设计，不需要设计基础。</p><p>答辩PPT控制在15-20页，重点突出研究方法和结论，不要堆文字。</p>
+      </div>
+      <div class="step-block" id="step-8">
+        <p>常见坑：第一，不要用百度搜索论文，很容易下到假文献。</p><p>第二，不要把所有文献都堆在论文里，选最相关的10-20篇就够了。</p><p>第三，不要最后一天才查重，给自己留修改时间。</p><p>第四，答辩PPT不要照搬论文，要提炼关键信息。</p>
+      </div>
+    </div>
+
+    <!-- 外部链接 -->
+    <section class="link-section">
+      <div class="section-head"><h3>🔗 参考链接</h3></div>
+      <div class="link-grid">
+        <a href="https://www.cnki.net/" target="_blank" class="link-card">
+          <span class="link-badge">official</span>
+          <strong class="link-title">中国知网</strong>
+          <p class="link-desc">国内最全学术数据库，期刊、论文、会议</p>
+        </a>
+        <a href="https://www.zotero.org/" target="_blank" class="link-card">
+          <span class="link-badge">official</span>
+          <strong class="link-title">Zotero 文献管理</strong>
+          <p class="link-desc">免费文献管理，自动生成参考文献</p>
+        </a>
+        <a href="https://www.wanfangdata.com.cn/" target="_blank" class="link-card">
+          <span class="link-badge">official</span>
+          <strong class="link-title">万方数据</strong>
+          <p class="link-desc">学术数据库，部分学校有授权</p>
+        </a>
+        <a href="https://scholar.google.com/" target="_blank" class="link-card">
+          <span class="link-badge">official</span>
+          <strong class="link-title">Google Scholar</strong>
+          <p class="link-desc">英文文献检索，覆盖面最广</p>
+        </a>
+        <a href="https://www.paperyy.com/" target="_blank" class="link-card">
+          <span class="link-badge">official</span>
+          <strong class="link-title">PaperYY 查重</strong>
+          <p class="link-desc">每天一次免费查重，适合初稿自查</p>
+        </a>
+        <a href="https://www.canva.cn/" target="_blank" class="link-card">
+          <span class="link-badge">official</span>
+          <strong class="link-title">Canva 可画</strong>
+          <p class="link-desc">答辩PPT模板，拖拽式设计</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- 可执行清单 -->
+    <section class="checklist-section">
+      <div class="section-head"><h3>✅ 可执行清单</h3></div>
+      <ul class="check-items"><li><span class="check-icon">✓</span><span>文献检索：中国知网（cnki.net）、万方数据（wanfangdata.com.cn）</span></li><li><span class="check-icon">✓</span><span>文献管理：Zotero（zotero.org）免费，自动生成参考文献</span></li><li><span class="check-icon">✓</span><span>笔记整理：幕布（mubu.com）做大纲，OneNote做详细笔记</span></li><li><span class="check-icon">✓</span><span>论文写作：Word或WPS，用样式功能统一格式</span></li><li><span class="check-icon">✓</span><span>查重：优先用学校提供的免费次数，自查用PaperYY</span></li><li><span class="check-icon">✓</span><span>答辩PPT：WPS模板或Canva（canva.cn）学术模板</span></li>
+      </ul>
+    </section>
+
+    <!-- 避坑提醒 -->
+    <section class="pitfall-section">
+      <div class="section-head"><h3>⚠️ 避坑提醒</h3></div>
+      <ul class="pitfall-items"><li><span class="pitfall-icon">!</span><span>不要用百度搜论文，用知网、万方、Google Scholar</span></li><li><span class="pitfall-icon">!</span><span>不要堆砌文献，选最相关的10-20篇</span></li><li><span class="pitfall-icon">!</span><span>不要最后一天才查重，留足修改时间</span></li><li><span class="pitfall-icon">!</span><span>答辩PPT不要照搬论文，要提炼关键信息</span></li>
+      </ul>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <div class="section-head"><h3>❓ 常见问题</h3></div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary class="faq-question">知网怎么免费访问？</summary>
+          <p class="faq-answer">大部分学校都买了知网授权，在校园网内访问知网是免费的。如果在校外，可以用学校提供的VPN或者知网校外访问系统。</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-question">Zotero和EndNote哪个更适合学生？</summary>
+          <p class="faq-answer">Zotero完全免费，功能够用，界面友好，适合大多数学生。EndNote功能更强大但需要付费，适合研究生或文献量特别大的情况。</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-question">论文查重率多少算合格？</summary>
+          <p class="faq-answer">不同学校要求不同，一般课程论文要求30%以下，毕业论文要求20%以下，核心期刊要求10%以下。具体以学校规定为准。</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-question">参考文献格式怎么调？</summary>
+          <p class="faq-answer">用Zotero管理文献，写Word时用Zotero插件一键插入引用，格式自动生成，不需要手动调整。</p>
+        </details>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

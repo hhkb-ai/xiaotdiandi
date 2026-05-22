@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>晓点滴 - 设计令牌 (Design Tokens)</title>
+  <style>
+    :root {
+      /* 颜色系统 - 浅色模式 */
+      --paper: #f7f3ea;
+      --ink: #191816;
+      --muted: #6f6a61;
+      --line: #ddd5c8;
+      --button: #191816;
+      --button-text: #fbf8f1;
+      --soft: #eee7dc;
+      --detail-text: #2d2a25;
+      --menu-bg: #fbf8f1;
+      --menu-hover: #efe8dc;
+      --shadow: rgba(25, 24, 22, 0.14);
+
+      /* 字体系统 */
+      --font-serif: ui-serif, "Iowan Old Style", "Songti SC", "Noto Serif CJK SC", Georgia, serif;
+      --font-sans: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+      /* 间距系统 */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-2xl: 48px;
+
+      /* 边框圆角 */
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-full: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-serif);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-family: var(--font-sans);
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 18px;
+      margin-bottom: 48px;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--ink);
+      font-family: var(--font-sans);
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--muted);
+      font-family: var(--font-sans);
+    }
+
+    .section {
+      margin-bottom: 64px;
+    }
+
+    /* 颜色展示 */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .color-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: white;
+    }
+
+    .color-preview {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: white;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .color-info {
+      padding: 12px;
+    }
+
+    .color-name {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
+      font-family: var(--font-sans);
+    }
+
+    .color-value {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .color-desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* 字体展示 */
+    .font-demo {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+      background: white;
+    }
+
+    .font-name {
+      font-family: var(--font-sans);
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .font-sample {
+      font-size: 24px;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .font-spec {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* 间距展示 */
+    .spacing-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .spacing-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: white;
+    }
+
+    .spacing-bar {
+      background: var(--ink);
+      height: 24px;
+      border-radius: 4px;
+      min-width: 4px;
+    }
+
+    .spacing-info {
+      flex: 1;
+    }
+
+    .spacing-name {
+      font-weight: 600;
+      font-size: 14px;
+      font-family: var(--font-sans);
+    }
+
+    .spacing-value {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* 圆角展示 */
+    .radius-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 16px;
+    }
+
+    .radius-card {
+      padding: 24px;
+      border: 2px solid var(--ink);
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .radius-preview {
+      width: 80px;
+      height: 80px;
+      background: var(--soft);
+      border: 2px solid var(--ink);
+    }
+
+    .radius-name {
+      font-weight: 600;
+      font-size: 14px;
+      font-family: var(--font-sans);
+    }
+
+    .radius-value {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* 阴影展示 */
+    .shadow-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 24px;
+    }
+
+    .shadow-card {
+      padding: 24px;
+      background: white;
+      border-radius: var(--radius-md);
+    }
+
+    .shadow-name {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 8px;
+      font-family: var(--font-sans);
+    }
+
+    .shadow-value {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      word-break: break-all;
+    }
+
+    /* 组件展示 */
+    .component-demo {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+      background: white;
+    }
+
+    .component-name {
+      font-weight: 600;
+      margin-bottom: 16px;
+      font-family: var(--font-sans);
+    }
+
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    /* 按钮样式 */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--button);
+      color: var(--button-text);
+      border: 1px solid var(--button);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--ink);
+    }
+
+    .btn-secondary:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid transparent;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .btn-ghost:hover {
+      color: var(--muted);
+    }
+
+    /* 输入框样式 */
+    .input {
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-serif);
+      font-size: 16px;
+      background: var(--paper);
+      color: var(--ink);
+      transition: border-color 0.2s;
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: var(--ink);
+    }
+
+    .input::placeholder {
+      color: var(--muted);
+    }
+
+    /* 标签样式 */
+    .tag {
+      display: inline-flex;
+      padding: 4px 10px;
+      background: var(--soft);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+    }
+
+    /* 卡片样式 */
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      background: white;
+      transition: all 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--ink);
+      box-shadow: 0 4px 12px var(--shadow);
+      transform: translateY(-2px);
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* 深色模式切换 */
+    .dark-mode-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 8px 16px;
+      background: var(--button);
+      color: var(--button-text);
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      z-index: 1000;
+    }
+
+    /* 响应式 */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 28px;
+      }
+
+      .color-grid,
+      .radius-grid,
+      .shadow-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 深色模式 */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #1a1a1a;
+        --ink: #e8e4de;
+        --muted: #9a9590;
+        --line: #3a3530;
+        --button: #e8e4de;
+        --button-text: #1a1a1a;
+        --soft: #2a2520;
+        --detail-text: #d8d4ce;
+        --menu-bg: #23211f;
+        --menu-hover: #2f2b27;
+        --shadow: rgba(0, 0, 0, 0.38);
+      }
+
+      .color-card,
+      .font-demo,
+      .spacing-item,
+      .component-demo,
+      .card {
+        background: var(--menu-bg);
+        border-color: var(--line);
+      }
+
+      .radius-card {
+        background: var(--menu-bg);
+      }
+
+      .shadow-card {
+        background: var(--menu-bg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>晓点滴设计令牌</h1>
+    <p class="subtitle">Design Tokens - 统一的设计系统规范</p>
+
+    <!-- 颜色系统 -->
+    <section class="section">
+      <h2>颜色系统</h2>
+      <h3>主色调</h3>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-preview" style="background: #f7f3ea; color: #191816;">Aa</div>
+          <div class="color-info">
+            <div class="color-name">--paper</div>
+            <div class="color-value">#f7f3ea</div>
+            <div class="color-desc">页面背景色 - 暖白色纸张</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-preview" style="background: #191816;">Aa</div>
+          <div class="color-info">
+            <div class="color-name">--ink</div>
+            <div class="color-value">#191816</div>
+            <div class="color-desc">主要文字色 - 近黑色</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-preview" style="background: #6f6a61;">Aa</div>
+          <div class="color-info">
+            <div class="color-name">--muted</div>
+            <div class="color-value">#6f6a61</div>
+            <div class="color-desc">次要文字色 - 灰褐色</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-preview" style="background: #2d2a25;">Aa</div>
+          <div class="color-info">
+            <div class="color-name">--detail-text</div>
+            <div class="color-value">#2d2a25</div>
+            <div class="color-desc">详情页文字色</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>界面元素色</h3>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-preview" style="background: #ddd5c8; color: #191816;">Aa</div>
+          <div class="color-info">
+            <div class="color-name">--line</div>
+            <div class="color-value">#ddd5c8</div>
+            <div class="color-desc">边框和分割线</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-preview" style="background: #eee7dc; color: #191816;">Aa</div>
+          <div class="color-info">
+            <div class="color-name">--soft</div>
+            <div class="color-value">#eee7dc</div>
+            <div class="color-desc">浅暖色背景</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-preview" style="background: #fbf8f1; color: #191816;">Aa</div>
+          <div class="color-info">
+            <div class="color-name">--menu-bg</div>
+            <div class="color-value">#fbf8f1</div>
+            <div class="color-desc">菜单背景色</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-preview" style="background: #efe8dc; color: #191816;">Aa</div>
+          <div class="color-info">
+            <div class="color-name">--menu-hover</div>
+            <div class="color-value">#efe8dc</div>
+            <div class="color-desc">菜单悬停色</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>按钮色</h3>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-preview" style="background: #191816;">Aa</div>
+          <div class="color-info">
+            <div class="color-name">--button</div>
+            <div class="color-value">#191816</div>
+            <div class="color-desc">按钮背景色</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-preview" style="background: #fbf8f1; color: #191816;">Aa</div>
+          <div class="color-info">
+            <div class="color-name">--button-text</div>
+            <div class="color-value">#fbf8f1</div>
+            <div class="color-desc">按钮文字色</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-preview" style="background: rgba(25, 24, 22, 0.14);">Aa</div>
+          <div class="color-info">
+            <div class="color-name">--shadow</div>
+            <div class="color-value">rgba(25, 24, 22, 0.14)</div>
+            <div class="color-desc">阴影颜色</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 字体系统 -->
+    <section class="section">
+      <h2>字体系统</h2>
+
+      <div class="font-demo">
+        <div class="font-name">正文衬线字体 (Serif)</div>
+        <div class="font-sample" style="font-family: ui-serif, 'Iowan Old Style', 'Songti SC', 'Noto Serif CJK SC', Georgia, serif;">
+          晓点滴 - 校园里的小事，也值得被认真记下。
+        </div>
+        <div class="font-spec">font-family: ui-serif, "Iowan Old Style", "Songti SC", "Noto Serif CJK SC", Georgia, serif</div>
+      </div>
+
+      <div class="font-demo">
+        <div class="font-name">UI 无衬线字体 (Sans)</div>
+        <div class="font-sample" style="font-family: Inter, 'PingFang SC', 'Microsoft YaHei', sans-serif;">
+          晓点滴 - 校园里的小事，也值得被认真记下。
+        </div>
+        <div class="font-spec">font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif</div>
+      </div>
+
+      <div class="font-demo">
+        <div class="font-name">等宽字体 (Mono)</div>
+        <div class="font-sample" style="font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;">
+          const story = { id: 1, title: "开学第一周" };
+        </div>
+        <div class="font-spec">font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace</div>
+      </div>
+    </section>
+
+    <!-- 间距系统 -->
+    <section class="section">
+      <h2>间距系统</h2>
+      <div class="spacing-list">
+        <div class="spacing-item">
+          <div class="spacing-bar" style="width: 4px;"></div>
+          <div class="spacing-info">
+            <div class="spacing-name">--space-xs</div>
+            <div class="spacing-value">4px</div>
+          </div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-bar" style="width: 8px;"></div>
+          <div class="spacing-info">
+            <div class="spacing-name">--space-sm</div>
+            <div class="spacing-value">8px</div>
+          </div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-bar" style="width: 16px;"></div>
+          <div class="spacing-info">
+            <div class="spacing-name">--space-md</div>
+            <div class="spacing-value">16px</div>
+          </div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-bar" style="width: 24px;"></div>
+          <div class="spacing-info">
+            <div class="spacing-name">--space-lg</div>
+            <div class="spacing-value">24px</div>
+          </div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-bar" style="width: 32px;"></div>
+          <div class="spacing-info">
+            <div class="spacing-name">--space-xl</div>
+            <div class="spacing-value">32px</div>
+          </div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-bar" style="width: 48px;"></div>
+          <div class="spacing-info">
+            <div class="spacing-name">--space-2xl</div>
+            <div class="spacing-value">48px</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 边框圆角 -->
+    <section class="section">
+      <h2>边框圆角</h2>
+      <div class="radius-grid">
+        <div class="radius-card">
+          <div class="radius-preview" style="border-radius: 6px;"></div>
+          <div class="radius-name">--radius-sm</div>
+          <div class="radius-value">6px</div>
+        </div>
+        <div class="radius-card">
+          <div class="radius-preview" style="border-radius: 8px;"></div>
+          <div class="radius-name">--radius-md</div>
+          <div class="radius-value">8px</div>
+        </div>
+        <div class="radius-card">
+          <div class="radius-preview" style="border-radius: 12px;"></div>
+          <div class="radius-name">--radius-lg</div>
+          <div class="radius-value">12px</div>
+        </div>
+        <div class="radius-card">
+          <div class="radius-preview" style="border-radius: 999px;"></div>
+          <div class="radius-name">--radius-full</div>
+          <div class="radius-value">999px</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 阴影效果 -->
+    <section class="section">
+      <h2>阴影效果</h2>
+      <div class="shadow-grid">
+        <div class="shadow-card" style="box-shadow: 0 0 0 4px rgba(25, 24, 22, 0.08);">
+          <div class="shadow-name">焦点状态</div>
+          <div class="shadow-value">0 0 0 4px rgba(25, 24, 22, 0.08)</div>
+        </div>
+        <div class="shadow-card" style="box-shadow: 0 0 0 4px rgba(232, 228, 222, 0.12);">
+          <div class="shadow-name">深色模式焦点</div>
+          <div class="shadow-value">0 0 0 4px rgba(232, 228, 222, 0.12)</div>
+        </div>
+        <div class="shadow-card" style="box-shadow: 0 10px 28px rgba(25, 24, 22, 0.08);">
+          <div class="shadow-name">卡片悬停</div>
+          <div class="shadow-value">0 10px 28px rgba(25, 24, 22, 0.08)</div>
+        </div>
+        <div class="shadow-card" style="box-shadow: 0 20px 48px rgba(25, 24, 22, 0.14);">
+          <div class="shadow-name">弹窗阴影</div>
+          <div class="shadow-value">0 20px 48px var(--shadow)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 组件示例 -->
+    <section class="section">
+      <h2>组件示例</h2>
+
+      <div class="component-demo">
+        <div class="component-name">按钮</div>
+        <div class="demo-row">
+          <button class="btn btn-primary">主要按钮</button>
+          <button class="btn btn-secondary">次要按钮</button>
+          <button class="btn btn-ghost">文字按钮</button>
+        </div>
+      </div>
+
+      <div class="component-demo">
+        <div class="component-name">输入框</div>
+        <div class="demo-row">
+          <input class="input" type="text" placeholder="请输入搜索内容...">
+          <input class="input" type="email" placeholder="your@email.com">
+        </div>
+      </div>
+
+      <div class="component-demo">
+        <div class="component-name">标签</div>
+        <div class="demo-row">
+          <span class="tag">校园生活</span>
+          <span class="tag">学习成长</span>
+          <span class="tag">实用知识</span>
+          <span class="tag">求职复盘</span>
+        </div>
+      </div>
+
+      <div class="component-demo">
+        <div class="component-name">卡片</div>
+        <div class="demo-row">
+          <div class="card" style="flex: 1; min-width: 200px;">
+            <div class="card-title">开学第一周</div>
+            <div class="card-desc">刚进校园时，最真实的慌张不是上课难，而是连哪栋楼在哪都分不清。</div>
+          </div>
+          <div class="card" style="flex: 1; min-width: 200px;">
+            <div class="card-title">宿舍夜聊</div>
+            <div class="card-desc">宿舍关系最微妙的地方，是大家白天各忙各的，晚上却能聊到很远。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 使用指南 -->
+    <section class="section">
+      <h2>使用指南</h2>
+      <div class="component-demo">
+        <div class="component-name">CSS 变量引用示例</div>
+        <pre style="background: var(--soft); padding: 16px; border-radius: 6px; font-family: var(--font-mono); font-size: 14px; overflow-x: auto;">
+/* 颜色 */
+color: var(--ink);
+background: var(--paper);
+border: 1px solid var(--line);
+
+/* 字体 */
+font-family: var(--font-serif);  /* 正文 */
+font-family: var(--font-sans);   /* UI 元素 */
+font-family: var(--font-mono);   /* 代码 */
+
+/* 间距 */
+padding: var(--space-md);
+margin: var(--space-lg);
+gap: var(--space-sm);
+
+/* 圆角 */
+border-radius: var(--radius-sm);
+border-radius: var(--radius-md);
+border-radius: var(--radius-full);
+
+/* 阴影 */
+box-shadow: 0 4px 12px var(--shadow);</pre>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // 检测系统深色模式
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.body.classList.add('dark-mode');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>博客项目修改预览</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    .header h1 {
+      font-size: 28px;
+      color: #1a1a1a;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: #666;
+      font-size: 16px;
+    }
+
+    .section {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+      font-size: 22px;
+      color: #1a1a1a;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #eee;
+    }
+
+    .fix-item {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border-left: 4px solid #28a745;
+    }
+
+    .fix-item h3 {
+      font-size: 18px;
+      color: #28a745;
+      margin-bottom: 10px;
+    }
+
+    .fix-item p {
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .code-block {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: "Courier New", monospace;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 15px 0;
+    }
+
+    .code-block .comment {
+      color: #6a9955;
+    }
+
+    .code-block .keyword {
+      color: #569cd6;
+    }
+
+    .code-block .function {
+      color: #dcdcaa;
+    }
+
+    .code-block .string {
+      color: #ce9178;
+    }
+
+    .before-after {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 20px 0;
+    }
+
+    .before, .after {
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .before {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+    }
+
+    .after {
+      background: #d4edda;
+      border: 1px solid #28a745;
+    }
+
+    .before h4 {
+      color: #856404;
+      margin-bottom: 10px;
+    }
+
+    .after h4 {
+      color: #155724;
+      margin-bottom: 10px;
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .feature-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .feature-list li:last-child {
+      border-bottom: none;
+    }
+
+    .feature-list li::before {
+      content: "✓";
+      color: #28a745;
+      font-weight: bold;
+      margin-right: 15px;
+      font-size: 18px;
+    }
+
+    .demo-section {
+      background: #f5f0e8;
+      padding: 30px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .demo-section h3 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #1a1a1a;
+    }
+
+    .article-content {
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .article-content h2 {
+      font-size: 24px;
+      margin: 24px 0 12px;
+      color: #1a1a1a;
+    }
+
+    .article-content h3 {
+      font-size: 20px;
+      margin: 20px 0 10px;
+      color: #1a1a1a;
+    }
+
+    .article-content h4 {
+      font-size: 18px;
+      margin: 18px 0 8px;
+      color: #1a1a1a;
+    }
+
+    .article-content p {
+      font-size: 17px;
+      line-height: 1.85;
+      color: #2c2825;
+      margin: 16px 0;
+    }
+
+    .article-content ol, .article-content ul {
+      margin: 16px 0;
+      padding-left: 24px;
+    }
+
+    .article-content li {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #2c2825;
+      margin-bottom: 12px;
+    }
+
+    .article-content strong {
+      color: #1a1a1a;
+      font-weight: 700;
+    }
+
+    .faq-demo {
+      background: #ebe5d9;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    .faq-item {
+      background: #f5f0e8;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      padding: 15px 20px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #1a1a1a;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-answer {
+      padding: 0 20px 15px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #2c2825;
+      display: none;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    .faq-item.open .faq-question::after {
+      content: "−";
+    }
+
+    .faq-question::after {
+      content: "+";
+      font-size: 20px;
+      color: #6b6560;
+    }
+
+    .summary-box {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      margin-top: 30px;
+    }
+
+    .summary-box h2 {
+      color: #fff;
+      border-bottom-color: rgba(255,255,255,0.3);
+    }
+
+    .summary-box p {
+      color: rgba(255,255,255,0.9);
+    }
+
+    @media (max-width: 768px) {
+      .before-after {
+        grid-template-columns: 1fr;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .section h2 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📝 博客项目修改预览</h1>
+      <p>本次修改解决了文章阅读性差、返回逻辑问题、排版问题等多个关键问题</p>
+    </div>
+
+    <div class="section">
+      <h2>🔧 主要修复内容</h2>
+
+      <div class="fix-item">
+        <h3>✅ 1. 返回逻辑修复</h3>
+        <p>修改了返回按钮的行为，现在会优先返回上一页，而不是总是跳转到首页。</p>
+        <div class="before-after">
+          <div class="before">
+            <h4>❌ 修改前</h4>
+            <p>总是跳转到首页：<code>router.push('/')</code></p>
+          </div>
+          <div class="after">
+            <h4>✅ 修改后</h4>
+            <p>智能返回：<code>router.back()</code> 或首页</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="fix-item">
+        <h3>✅ 2. 文章内容排版优化</h3>
+        <p>添加了智能的 Markdown 解析器，可以识别中文列表格式并转换为结构化内容。</p>
+        <ul class="feature-list">
+          <li>支持 Markdown 标题（# ## ###）</li>
+          <li>支持粗体和斜体</li>
+          <li>自动识别"第一，xxx；第二，xxx；第三，xxx"格式并转换为列表</li>
+          <li>识别"先做哪三步：..."、"常见坑：..."、"详细步骤：..."等模式</li>
+        </ul>
+      </div>
+
+      <div class="fix-item">
+        <h3>✅ 3. 目录生成优化</h3>
+        <p>改进了目录标题生成逻辑，提取更有意义的标题。</p>
+        <div class="before-after">
+          <div class="before">
+            <h4>❌ 修改前</h4>
+            <p>"很多同学大一选课时只看课程名字好不好听..."</p>
+          </div>
+          <div class="after">
+            <h4>✅ 修改后</h4>
+            <p>"先做哪三步"、"详细步骤"、"常见坑"</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="fix-item">
+        <h3>✅ 4. 添加 FAQ 展示</h3>
+        <p>现在会展示文章中的常见问题解答，使用可折叠的详情组件。</p>
+      </div>
+
+      <div class="fix-item">
+        <h3>✅ 5. 样式优化</h3>
+        <p>优化了移动端字体大小、行高和响应式布局，提升阅读体验。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>📖 实际效果演示</h2>
+
+      <div class="demo-section">
+        <h3>文章内容渲染效果对比</h3>
+
+        <div class="article-content">
+          <h2>选课避坑：大二才知道的三个技巧</h2>
+          <p>选课不只是选老师，更是选时间、选节奏、选期末压力。提前看培养方案、平衡学分难度、抢课设闹钟，三步就能避开大部分选课坑。</p>
+
+          <h3>先做哪三步</h3>
+          <ol>
+            <li>开学前登录教务系统看培养方案，把必修、选修、通识课的学分要求列出来</li>
+            <li>把下学期要选的课按难度分三档（难、中、易），每学期保证难易搭配</li>
+            <li>热门课提前加入收藏，选课开放后第一时间操作</li>
+          </ol>
+
+          <h3>详细步骤</h3>
+          <p>第一步，看培养方案。每个专业的培养方案在教务系统里都能查到，上面列清楚了毕业需要的总学分、必修课学分、选修课学分、通识课学分，以及哪些课有先修要求。</p>
+
+          <h3>常见坑</h3>
+          <ul>
+            <li>忽略先修要求。有些课必须先修完前置课程才能选，不看清楚选了也白选</li>
+            <li>把所有硬课集中在一个学期。期末周会非常痛苦，成绩也可能不理想</li>
+            <li>错过选课时间。热门课几分钟就满，不设闹钟大概率选不上</li>
+          </ul>
+
+          <div class="faq-demo">
+            <h4>常见问题 FAQ</h4>
+            <div class="faq-item open">
+              <div class="faq-question">选课一般什么时候开始？</div>
+              <div class="faq-answer">各校安排不同，通常在开学前一到两周开放选课。具体时间以本校教务处通知为准。</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">没选上热门课怎么办？</div>
+              <div class="faq-answer">关注补退选阶段，通常开学第一周会有同学退课腾出位置。</div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">选课学分有上限吗？</div>
+              <div class="faq-answer">多数学校每学期有学分上限（通常 25 到 30 学分），具体以本校教务处规定为准。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section summary-box">
+      <h2>🎯 修改总结</h2>
+      <ul class="feature-list">
+        <li><strong>返回逻辑</strong>：智能返回上一页，提升用户体验</li>
+        <li><strong>内容结构化</strong>：自动识别中文列表格式，转换为清晰的结构</li>
+        <li><strong>目录优化</strong>：提取有意义的标题，便于导航</li>
+        <li><strong>FAQ 展示</strong>：新增常见问题板块，解答用户疑问</li>
+        <li><strong>样式优化</strong>：移动端适配，提升阅读舒适度</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>💻 如何测试</h2>
+      <p>在你的本地环境中运行以下命令：</p>
+      <div class="code-block">
+        <span class="comment"># 进入项目目录</span><br>
+        <span class="keyword">cd</span> blog-vue<br><br>
+        <span class="comment"># 安装依赖（如果还没有安装）</span><br>
+        <span class="function">npm</span> install<br><br>
+        <span class="comment"># 启动开发服务器</span><br>
+        <span class="function">npm</span> run dev<br><br>
+        <span class="comment"># 打开浏览器访问 http://localhost:5173</span>
+      </div>
+      <p>然后点击任意文章查看详情页，测试返回按钮和内容排版效果。</p>
+    </div>
+  </div>
+
+  <script>
+    // FAQ 折叠功能演示
+    document.querySelectorAll('.faq-question').forEach(question => {
+      question.addEventListener('click', () => {
+        const item = question.parentElement;
+        item.classList.toggle('open');
+      });
+    });
+  </script>
+</body>
+</html>

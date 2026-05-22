@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude 风格配色预览</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #faf9f7; color: #1a1a1a; line-height: 1.6;
+    }
+    .container { max-width: 800px; margin: 0 auto; padding: 32px 16px; }
+    
+    .hero { background: #ffffff; border: 1px solid #e7e5e4; border-radius: 12px; padding: 32px; box-shadow: 0 1px 2px rgba(28,25,23,0.08); margin-bottom: 24px; }
+    .tag { display: inline-flex; padding: 4px 12px; border: 1px solid #e7e5e4; border-radius: 999px; font-size: 12px; font-weight: 600; color: #d97706; margin-bottom: 16px; }
+    .title { font-size: 28px; font-weight: 700; margin: 0 0 12px; color: #1a1a1a; }
+    .desc { font-size: 16px; color: #78716c; margin: 0; }
+    
+    .summary-card { background: #faf9f7; border: 1px solid #e7e5e4; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+    .summary-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #e7e5e4; }
+    .summary-head h3 { font-size: 16px; font-weight: 700; color: #1a1a1a; }
+    .badge { font-size: 12px; color: #d97706; background: #fefce8; padding: 2px 10px; border-radius: 999px; }
+    .summary-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+    .summary-list li { display: flex; gap: 10px; font-size: 14px; line-height: 1.7; color: #292524; }
+    .num { min-width: 22px; height: 22px; background: #d97706; color: #fff; border-radius: 999px; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    
+    .card { background: #ffffff; border: 1px solid #e7e5e4; border-radius: 12px; padding: 24px; box-shadow: 0 1px 2px rgba(28,25,23,0.08); margin-bottom: 24px; }
+    .card-head { margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #e7e5e4; }
+    .card-head h3 { font-size: 16px; font-weight: 700; color: #1a1a1a; }
+    
+    .link-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .link-card { display: flex; flex-direction: column; gap: 6px; padding: 14px; background: #faf9f7; border: 1px solid #e7e5e4; border-radius: 8px; text-decoration: none; transition: all 0.2s; }
+    .link-card:hover { border-color: #d97706; box-shadow: 0 2px 8px rgba(28,25,23,0.08); }
+    .link-badge { display: inline-flex; width: fit-content; padding: 1px 6px; background: #d97706; color: #fff; border-radius: 6px; font-size: 10px; font-weight: 600; text-transform: uppercase; }
+    .link-title { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+    .link-desc { font-size: 12px; color: #78716c; }
+    
+    .check-item { display: flex; gap: 10px; font-size: 14px; color: #292524; margin-bottom: 10px; }
+    .check-icon { min-width: 20px; height: 20px; background: #d97706; color: #fff; border-radius: 999px; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    
+    .warning { background: #fefce8; border: 1px solid #d97706; border-radius: 12px; padding: 24px; margin-bottom: 24px; }
+    .warn-item { display: flex; gap: 10px; font-size: 14px; color: #292524; margin-bottom: 10px; }
+    .warn-icon { min-width: 20px; height: 20px; background: #d97706; color: #fff; border-radius: 999px; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    
+    .faq-item { background: #faf9f7; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+    .faq-q { padding: 14px 16px; font-size: 14px; font-weight: 600; color: #1a1a1a; cursor: pointer; display: flex; justify-content: space-between; }
+    .faq-q::after { content: "+"; color: #78716c; }
+    .faq-item[open] .faq-q::after { content: "−"; }
+    .faq-a { padding: 0 16px 14px; font-size: 13px; line-height: 1.7; color: #292524; }
+    
+    .btn { display: inline-flex; padding: 10px 20px; background: #d97706; color: #fff; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px; transition: all 0.2s; }
+    .btn:hover { background: #b45309; }
+    
+    .palette { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 24px; }
+    .color-chip { text-align: center; }
+    .color-block { width: 100%; height: 48px; border-radius: 8px; border: 1px solid #e7e5e4; margin-bottom: 4px; }
+    .color-label { font-size: 11px; color: #78716c; }
+    
+    @media (max-width: 640px) { .link-grid { grid-template-columns: 1fr; } .palette { grid-template-columns: repeat(3, 1fr); } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="font-size: 24px; margin-bottom: 24px;">🎨 Claude 官网风格配色预览</h1>
+    
+    <!-- 色板 -->
+    <div class="palette">
+      <div class="color-chip"><div class="color-block" style="background: #faf9f7;"></div><span class="color-label">背景 #faf9f7</span></div>
+      <div class="color-chip"><div class="color-block" style="background: #ffffff; border: 1px solid #e7e5e4;"></div><span class="color-label">卡片 #ffffff</span></div>
+      <div class="color-chip"><div class="color-block" style="background: #d97706;"></div><span class="color-label">强调 #d97706</span></div>
+      <div class="color-chip"><div class="color-block" style="background: #1a1a1a;"></div><span class="color-label">文字 #1a1a1a</span></div>
+      <div class="color-chip"><div class="color-block" style="background: #78716c;"></div><span class="color-label">次要 #78716c</span></div>
+      <div class="color-chip"><div class="color-block" style="background: #e7e5e4;"></div><span class="color-label">边框 #e7e5e4</span></div>
+    </div>
+    
+    <!-- Hero -->
+    <div class="hero" style="margin-top: 24px;">
+      <span class="tag">校园生活</span>
+      <h1 class="title">选课避坑：大二才知道的三个技巧</h1>
+      <p class="desc">选课不只是选老师，更是选时间、选节奏、选期末压力。提前看培养方案、平衡学分难度、抢课设闹钟，三步就能避开大部分选课坑。</p>
+    </div>
+    
+    <!-- 快速结论 -->
+    <div class="summary-card">
+      <div class="summary-head">
+        <h3>💡 快速结论</h3>
+        <span class="badge">30秒看重点</span>
+      </div>
+      <ul class="summary-list"><li><span class="num">1</span><span>选课前先看培养方案，平衡难度和学分，关注选课时间节点。</span></li><li><span class="num">2</span><span>开学前查看培养方案，列出必修和选修学分要求</span></li><li><span class="num">3</span><span>每学期控制在 20 到 25 学分，难易搭配</span></li>
+      </ul>
+    </div>
+    
+    <!-- 参考链接 -->
+    <div class="card">
+      <div class="card-head"><h3>🔗 参考链接</h3></div>
+      <div class="link-grid">
+      </div>
+    </div>
+    
+    <!-- 可执行清单 -->
+    <div class="card">
+      <div class="card-head"><h3>✅ 可执行清单</h3></div><div class="check-item"><span class="check-icon">✓</span><span>开学前查看培养方案，列出必修和选修学分要求</span></div><div class="check-item"><span class="check-icon">✓</span><span>每学期控制在 20 到 25 学分，难易搭配</span></div><div class="check-item"><span class="check-icon">✓</span><span>热门课提前加入收藏，选课开放后第一时间操作</span></div><div class="check-item"><span class="check-icon">✓</span><span>关注补退选阶段，第一周常有空位释放</span></div>
+    </div>
+    
+    <!-- 避坑提醒 -->
+    <div class="warning">
+      <div class="card-head"><h3>⚠️ 避坑提醒</h3></div><div class="warn-item"><span class="warn-icon">!</span><span>不要只看课程名字选课，忽略了先修要求</span></div><div class="warn-item"><span class="warn-icon">!</span><span>不要一个学期全选硬课，期末压力会很大</span></div><div class="warn-item"><span class="warn-icon">!</span><span>不要错过选课时间，热门课几分钟就满</span></div>
+    </div>
+    
+    <!-- 按钮 -->
+    <div style="margin-bottom: 24px;">
+      <button class="btn">主要按钮</button>
+    </div>
+    
+    <!-- FAQ -->
+    <div class="card">
+      <div class="card-head"><h3>❓ 常见问题</h3></div>
+      <details class="faq-item">
+        <summary class="faq-q">选课一般什么时候开始？</summary>
+        <p class="faq-a">各校安排不同，通常在开学前一到两周开放选课。具体时间以本校教务处通知为准，需以官方最新信息为准。</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">没选上热门课怎么办？</summary>
+        <p class="faq-a">关注补退选阶段，通常开学第一周会有同学退课腾出位置。也可以联系教务处询问是否可以加选。</p>
+      </details>
+    </div>
+  </div>
+</body>
+</html>

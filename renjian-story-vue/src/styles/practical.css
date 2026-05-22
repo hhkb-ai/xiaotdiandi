@@ -1,0 +1,127 @@
+.practical-panel {
+  margin: 34px 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: clamp(18px, 3vw, 26px);
+  background: var(--soft);
+}
+
+.practical-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.practical-head h3 {
+  margin-top: 8px;
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 1.12;
+}
+
+.practical-head > span {
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: var(--muted);
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.practical-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.practical-grid article {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--paper);
+}
+
+.practical-grid h4 {
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.detail-view .practical-grid p,
+.practical-grid li {
+  margin: 0;
+  color: var(--detail-text);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.practical-grid ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.check-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.check-list li {
+  position: relative;
+  padding-left: 22px;
+}
+
+.check-list li::before {
+  content: "";
+  position: absolute;
+  top: 0.45em;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--ink);
+  border-radius: 3px;
+  background: transparent;
+}
+
+.keyword-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.keyword-tags strong,
+.keyword-tags button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.keyword-tags strong {
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.keyword-tags button {
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.keyword-tags button:hover,
+.keyword-tags button:focus-visible {
+  background: var(--paper);
+  color: var(--ink);
+}
