@@ -99,7 +99,8 @@
   }
 
   .category-group:hover .category-panel,
-  .category-group:focus-within .category-panel {
+  .category-group:focus-within .category-panel,
+  .category-group.is-open .category-panel {
     display: grid;
     transform: none;
   }

@@ -399,8 +399,8 @@ onUnmounted(() => {
 }
 
 .hero-carousel-controls button {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   background: var(--paper);
@@ -479,16 +479,30 @@ onUnmounted(() => {
 }
 
 .hero-dots button {
-  width: 8px;
-  height: 8px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: none;
-  background: var(--line);
+  background: transparent;
   cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.hero-dots button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--line);
   transition: all 0.2s;
 }
 
-.hero-dots button.is-active {
+.hero-dots button.is-active::after {
   background: var(--ink);
   width: 24px;
   border-radius: 4px;

@@ -311,6 +311,7 @@ watch(() => route.params.category, (newCat) => {
   font-size: 14px;
   color: var(--ink);
   padding: 8px 12px;
+  min-height: 44px;
   border-radius: 6px;
   transition: background 0.2s;
 }
@@ -343,6 +344,7 @@ watch(() => route.params.category, (newCat) => {
 
 .sort-controls select {
   padding: 6px 10px;
+  min-height: 44px;
   border: 1px solid var(--line);
   border-radius: 4px;
   background: var(--paper);

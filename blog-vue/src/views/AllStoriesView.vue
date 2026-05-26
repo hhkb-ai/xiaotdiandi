@@ -128,6 +128,7 @@ function goBack() {
 
 .filter-group button {
   padding: 8px 16px;
+  min-height: 44px;
   border: 1px solid var(--line);
   border-radius: var(--radius-full);
   background: var(--paper);
@@ -154,6 +155,7 @@ function goBack() {
 
 .sort-group select {
   padding: 8px 12px;
+  min-height: 44px;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   background: var(--paper);

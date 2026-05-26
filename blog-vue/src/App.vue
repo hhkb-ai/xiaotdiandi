@@ -12,19 +12,19 @@
     </nav>
   </header>
 
-  <nav class="category-bar container" aria-label="顶部分类">
+  <nav class="category-bar container" aria-label="顶部分类" @click="closeGroups($event)">
     <router-link
       class="category-pill"
       :class="{ 'is-active': currentCategory === '全部' }"
       to="/"
       @click="applyCategory('全部')"
     >全部内容</router-link>
-    <div class="category-group category-group-campus">
+    <div class="category-group category-group-campus" :class="{ 'is-open': openGroup === 'campus' }">
       <button
         class="category-pill"
         type="button"
         :class="{ 'is-active': currentCategory === '校园日常' }"
-        @click="applyCategory('校园日常')"
+        @click.stop.prevent="toggleGroup('campus')"
       >校园日常</button>
       <div class="category-panel" aria-label="校园日常细分">
         <router-link to="/" @click="applyCategory('校园生活')">
@@ -41,12 +41,12 @@
         </router-link>
       </div>
     </div>
-    <div class="category-group category-group-study">
+    <div class="category-group category-group-study" :class="{ 'is-open': openGroup === 'study' }">
       <button
         class="category-pill"
         type="button"
         :class="{ 'is-active': currentCategory === '学习知识' }"
-        @click="applyCategory('学习知识')"
+        @click.stop.prevent="toggleGroup('study')"
       >学习知识</button>
       <div class="category-panel" aria-label="学习知识细分">
         <router-link to="/" @click="applyCategory('学习成长')">
@@ -67,12 +67,12 @@
         </router-link>
       </div>
     </div>
-    <div class="category-group category-group-safety">
+    <div class="category-group category-group-safety" :class="{ 'is-open': openGroup === 'safety' }">
       <button
         class="category-pill"
         type="button"
         :class="{ 'is-active': currentCategory === '安全情绪' }"
-        @click="applyCategory('安全情绪')"
+        @click.stop.prevent="toggleGroup('safety')"
       >安全情绪</button>
       <div class="category-panel" aria-label="安全情绪细分">
         <router-link to="/" @click="applyCategory('安全与情绪')">
@@ -108,6 +108,19 @@ const router = useRouter()
 const { category, applyCategory } = useStories()
 
 const currentCategory = computed(() => category.value)
+
+// 分类面板展开状态
+const openGroup = ref(null)
+
+function toggleGroup(name) {
+  openGroup.value = openGroup.value === name ? null : name
+}
+
+function closeGroups(event) {
+  if (!event.target.closest('.category-group')) {
+    openGroup.value = null
+  }
+}
 
 // 主题切换
 const isDark = ref(false)
@@ -155,6 +168,7 @@ function scrollToSection(sectionId) {
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   padding: 6px 10px;
+  min-height: 44px;
   font-size: 16px;
   cursor: pointer;
   transition: all 0.2s;
