@@ -14,8 +14,8 @@ const categoryGroups = {
   安全情绪: ['安全与情绪']
 }
 
-const curatedHeroIds = [51, 5, 47, 34, 13]
-const curatedQualityIds = [51, 5, 47, 34, 48, 49, 13, 1, 15, 6]
+const curatedHeroIds = [5, 30, 42, 29, 41]
+const curatedQualityIds = [5, 30, 42, 29, 41, 44, 15, 23, 14, 13]
 
 function pickStoriesByIds(sourceStories, ids, limit = ids.length) {
   const source = sourceStories || []
@@ -140,4 +140,3 @@ export function useStories() {
     applyKeyword,
     toggleShowAll
   }
-}

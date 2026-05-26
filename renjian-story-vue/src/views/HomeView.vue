@@ -327,11 +327,11 @@ const searchSuggestions = computed(() => {
 })
 
 const spotlightStory = computed(() => {
-  return stories.value.find(story => story.id === 13) || qualityStories.value[0] || null
+  return stories.value.find(story => story.id === 30) || qualityStories.value[0] || null
 })
 
 const practicalShelf = computed(() => {
-  const ids = [13, 15, 16, 14]
+  const ids = [5, 15, 23, 30]
   const picked = ids
     .map(id => stories.value.find(story => story.id === id))
     .filter(Boolean)
@@ -339,7 +339,7 @@ const practicalShelf = computed(() => {
 })
 
 const homepagePicks = computed(() => {
-  const ids = [5, 51, 47, 49, 43, 1]
+  const ids = [5, 30, 42, 29, 41, 44]
   const picked = ids
     .map(id => stories.value.find(story => story.id === id))
     .filter(Boolean)
