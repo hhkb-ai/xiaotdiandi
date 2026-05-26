@@ -5,3 +5,4 @@ test-vue-deploy/
 .DS_Store
 Thumbs.db
 *.bak
+*.tmp
