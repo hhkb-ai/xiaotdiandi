@@ -339,7 +339,7 @@ const practicalShelf = computed(() => {
 })
 
 const homepagePicks = computed(() => {
-  const ids = [5, 6, 46, 34, 43, 1]
+  const ids = [5, 51, 47, 49, 43, 1]
   const picked = ids
     .map(id => stories.value.find(story => story.id === id))
     .filter(Boolean)

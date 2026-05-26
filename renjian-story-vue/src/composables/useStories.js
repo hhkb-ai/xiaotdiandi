@@ -14,8 +14,8 @@ const categoryGroups = {
   安全情绪: ['安全与情绪']
 }
 
-const curatedHeroIds = [13, 5, 6, 46, 34]
-const curatedQualityIds = [13, 15, 16, 5, 6, 46, 34, 44, 1, 31]
+const curatedHeroIds = [51, 5, 47, 34, 13]
+const curatedQualityIds = [51, 5, 47, 34, 48, 49, 13, 1, 15, 6]
 
 function pickStoriesByIds(sourceStories, ids, limit = ids.length) {
   const source = sourceStories || []
