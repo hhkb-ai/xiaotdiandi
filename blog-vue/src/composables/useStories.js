@@ -1,8 +1,24 @@
 import { ref, computed } from 'vue'
 import storiesData from '@/data/stories.json'
 
+// 内容质量策略：低质量或过泛文章先不进入公开列表，避免首页和相关推荐被稀释。
+const MIN_PUBLIC_WEIGHT = 72
+const FEATURED_WEIGHT = 80
+const EXCLUDED_STORY_IDS = new Set([])
+
+function isPublicStory(story) {
+  if (!story || EXCLUDED_STORY_IDS.has(story.id)) return false
+  if (story.hidden === true) return false
+  return Number(story.weight || 0) >= MIN_PUBLIC_WEIGHT
+}
+
+function toTime(date) {
+  const time = new Date(date).getTime()
+  return Number.isNaN(time) ? 0 : time
+}
+
 // 响应式状态
-const stories = ref(storiesData)
+const rawStories = ref(storiesData)
 const category = ref('全部')
 const keyword = ref('')
 const showAll = ref(false)
@@ -16,6 +32,8 @@ const categoryGroups = {
 }
 
 export function useStories() {
+  const stories = computed(() => rawStories.value.filter(isPublicStory))
+
   // 过滤故事
   const filteredStories = computed(() => {
     let result = stories.value
@@ -28,13 +46,14 @@ export function useStories() {
 
     // 关键词过滤
     if (keyword.value) {
-      const query = keyword.value.toLowerCase()
+      const query = keyword.value.trim().toLowerCase()
       result = result.filter(story => {
         const searchText = [
           story.title,
           story.summary,
           story.category,
           ...(story.keywords || []),
+          ...(story.searchKeywords || []),
           ...(story.content || [])
         ].join(' ').toLowerCase()
         return searchText.includes(query)
@@ -50,27 +69,25 @@ export function useStories() {
 
     switch (sort.value) {
       case 'latest':
-        return storiesCopy.sort((a, b) => new Date(b.date) - new Date(a.date))
+        return storiesCopy.sort((a, b) => toTime(b.date) - toTime(a.date))
       case 'quality':
         return storiesCopy.sort((a, b) => (b.weight || 0) - (a.weight || 0))
       case 'relevance':
       default:
-        return storiesCopy
+        return storiesCopy.sort((a, b) => (b.weight || 0) - (a.weight || 0))
     }
   })
 
   // 显示的故事列表
   const displayStories = computed(() => {
-    if (showAll.value) {
-      return sortedStories.value
-    }
+    if (showAll.value) return sortedStories.value
     return sortedStories.value.slice(0, 6)
   })
 
-  // 精选故事
+  // 精选故事：只使用质量分更高的内容
   const heroStories = computed(() => {
     return stories.value
-      .filter(story => story.weight >= 70)
+      .filter(story => story.weight >= FEATURED_WEIGHT)
       .sort((a, b) => (b.weight || 0) - (a.weight || 0))
       .slice(0, 5)
   })
@@ -78,7 +95,7 @@ export function useStories() {
   // 最新故事
   const latestStories = computed(() => {
     return [...stories.value]
-      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .sort((a, b) => toTime(b.date) - toTime(a.date))
       .slice(0, 4)
   })
 
@@ -89,7 +106,7 @@ export function useStories() {
       .slice(0, 6)
   })
 
-  // 获取故事详情
+  // 获取故事详情：低质量文章同步下架，避免旧链接继续打开
   function getStoryById(id) {
     return stories.value.find(story => story.id === Number(id))
   }
@@ -100,12 +117,14 @@ export function useStories() {
 
     return stories.value
       .filter(s => s.id !== story.id && s.category === story.category)
+      .sort((a, b) => (b.weight || 0) - (a.weight || 0))
       .slice(0, limit)
   }
 
   // 应用分类
   function applyCategory(newCategory) {
     category.value = newCategory
+    keyword.value = ''
     showAll.value = false
   }
 
@@ -122,6 +141,7 @@ export function useStories() {
 
   return {
     stories,
+    rawStories,
     category,
     keyword,
     showAll,
