@@ -146,4 +146,6 @@ main {
   transition: color 0.2s;
 }
 
-.sit
+.site-footer a:hover {
+  color: var(--ink);
+}
