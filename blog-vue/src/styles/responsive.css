@@ -28,6 +28,19 @@
   }
 }
 
+@media (max-width: 900px) {
+  .story-grid,
+  .story-list,
+  .feature-grid,
+  .feature-grid--large,
+  .practical-grid,
+  .related-grid,
+  .bottom-section,
+  .info-section {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 @media (max-width: 780px) {
   .site-header,
   .hero,
@@ -40,7 +53,25 @@
   .site-header {
     align-items: flex-start;
     flex-direction: column;
-    padding: 18px 0;
+    gap: 14px;
+    padding: 16px 0;
+  }
+
+  .brand {
+    font-size: 20px;
+  }
+
+  .site-nav {
+    width: 100%;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .site-nav a,
+  .theme-toggle {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
   }
 
   .category-bar {
@@ -56,6 +87,11 @@
 
   .category-bar::-webkit-scrollbar {
     display: none;
+  }
+
+  .category-pill {
+    white-space: nowrap;
+    flex: 0 0 auto;
   }
 
   .category-group {
@@ -93,9 +129,10 @@
     display: none;
   }
 
+  .category-panel a,
   .category-panel button {
     width: 100%;
-    min-height: 0;
+    min-height: 44px;
   }
 
   .category-group:hover .category-panel,
@@ -109,9 +146,44 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .list-tools {
+  .toolbar,
+  .list-tools,
+  .section-header,
+  .home-section-heading,
+  .hero-feature-head,
+  .hero-feature-foot,
+  .card-header,
+  .card-footer,
+  .practical-head,
+  .summary-head {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .toolbar,
+  .section-header {
+    gap: 12px;
+  }
+
+  .filter-group,
+  .category-tags {
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .filter-group::-webkit-scrollbar,
+  .category-tags::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-group button,
+  .category-tags button {
+    flex: 0 0 auto;
+    white-space: nowrap;
   }
 
   .sidebar {
@@ -120,6 +192,7 @@
 
   .hero {
     gap: 26px;
+    padding: 32px 0;
   }
 
   .hero-feature {
@@ -127,16 +200,24 @@
     padding: 16px;
   }
 
-  .feature-grid,
-  .feature-grid--large,
-  .practical-grid,
-  .related-grid {
-    grid-template-columns: 1fr;
+  .story-card,
+  .feature-card,
+  .card,
+  .link-section,
+  .checklist-section,
+  .pitfall-section,
+  .faq-section,
+  .related-section,
+  .quick-summary,
+  .bluf-card {
+    border-radius: var(--radius-md);
   }
 
-  .home-section-heading {
-    align-items: flex-start;
-    flex-direction: column;
+  .story-card:hover,
+  .feature-card:hover,
+  .card:hover,
+  .related-card:hover {
+    transform: none;
   }
 
   .home-section-heading > p {
@@ -144,15 +225,13 @@
   }
 
   .subscribe-form button {
-    width: fit-content;
+    width: 100%;
   }
 
   .site-footer {
+    align-items: flex-start;
     flex-direction: column;
-  }
-
-  .practical-grid {
-    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
 
@@ -164,6 +243,10 @@
     width: min(100% - 24px, 1120px);
   }
 
+  .container {
+    width: min(100% - 24px, 1120px);
+  }
+
   .category-panel {
     width: auto;
   }
@@ -172,10 +255,28 @@
     flex-wrap: wrap;
   }
 
-  .hero h1 {
-    max-width: 10em;
-    font-size: 30px;
-    line-height: 1.14;
+  .hero h1,
+  .page-header h1,
+  .category-hero-content h1 {
+    max-width: 100%;
+    font-size: clamp(24px, 8vw, 30px);
+    line-height: 1.18;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .hero-copy,
+  .category-desc,
+  .page-desc {
+    font-size: 15px;
+  }
+
+  .hero-search input,
+  .subscribe-form input,
+  .sort-group select {
+    width: 100%;
+    min-height: 46px;
+    font-size: 16px;
   }
 
   .hero-feature-head,
@@ -184,19 +285,46 @@
     flex-direction: column;
   }
 
-  .hero-slide-card h4 {
-    font-family: var(--font-sans);
-    max-width: 13em;
-    font-size: 21px;
-    font-weight: 700;
-    line-height: 1.18;
-    overflow-wrap: anywhere;
-    word-break: break-all;
+  .hero-carousel-controls button,
+  .hero-dots button,
+  .btn,
+  .filter-group button,
+  .category-tags button {
+    min-height: 44px;
   }
 
-  .hero-slide-card p {
+  .hero-slide-card h4 {
+    font-family: var(--font-sans);
+    max-width: 100%;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .hero-slide-card p,
+  .story-card p,
+  .feature-card p {
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.65;
+  }
+
+  .story-card,
+  .feature-card,
+  .hero-slide-card {
+    padding: 18px;
+  }
+
+  .story-card h3 {
+    font-size: 18px;
+  }
+
+  .card-category,
+  .card-date,
+  .card-author,
+  .card-link {
+    font-size: 12px;
   }
 
   .tabs {
@@ -206,5 +334,64 @@
   .info-section {
     grid-template-columns: 1fr;
     gap: 24px;
+  }
+
+  .tutorial-view {
+    width: 100%;
+    padding-inline: 12px;
+  }
+
+  .tutorial-title {
+    font-size: clamp(22px, 7vw, 28px);
+  }
+
+  .tutorial-summary,
+  .step-block :deep(p) {
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  .link-section,
+  .checklist-section,
+  .pitfall-section,
+  .faq-section,
+  .related-section,
+  .quick-summary,
+  .bluf-card {
+    padding: 16px;
+  }
+
+  .faq-question,
+  .check-items li,
+  .pitfall-items li,
+  .summary-list li {
+    font-size: 14px;
+  }
+
+  pre,
+  code,
+  .step-block :deep(pre) {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 360px) {
+  .site-header,
+  .category-bar,
+  main,
+  .site-footer,
+  .container {
+    width: min(100% - 16px, 1120px);
+  }
+
+  .story-card,
+  .feature-card,
+  .hero-slide-card {
+    padding: 14px;
+  }
+
+  .hero h1 {
+    font-size: 23px;
   }
 }
