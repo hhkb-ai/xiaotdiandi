@@ -40,7 +40,7 @@
   min-height: 58px;
   overflow: visible;
   border-bottom: 1px solid var(--line);
-  background: var(--paper);
+  background: #ffffff;  /* fallback for browsers without color-mix */
   background: color-mix(in srgb, var(--paper) 92%, transparent);
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
@@ -146,6 +146,4 @@ main {
   transition: color 0.2s;
 }
 
-.site-footer a:hover {
-  color: var(--ink);
-}
+.sit

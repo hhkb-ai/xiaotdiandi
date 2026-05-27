@@ -8,7 +8,7 @@
   min-height: 58px;
   overflow: visible;
   border-bottom: 1px solid var(--line);
-  background: var(--paper);
+  background: #ffffff;  /* fallback for browsers without color-mix */
   background: color-mix(in srgb, var(--paper) 92%, transparent);
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
@@ -309,6 +309,4 @@
   line-height: 1.45;
   display: -webkit-box;
   overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
+  -webkit-box-ori
