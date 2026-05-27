@@ -1,0 +1,47 @@
+@media (max-width: 780px) {
+  .category-panel-head .category-close {
+    width: auto;
+    min-width: 64px;
+    min-height: 36px;
+    flex: 0 0 auto;
+    padding: 6px 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .category-panel-head .category-close:hover,
+  .category-panel-head .category-close:focus-visible {
+    border-color: var(--ink);
+    color: var(--ink);
+    outline: 0;
+  }
+
+  .category-panel a:focus-visible,
+  .category-panel button:focus-visible,
+  .category-pill:focus-visible,
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  .hero-feature,
+  .story-card,
+  .feature-card,
+  .quick-summary,
+  .bluf-card,
+  .link-section,
+  .checklist-section,
+  .pitfall-section,
+  .faq-section,
+  .related-section {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .card-header,
+  .card-footer,
+  .story-meta,
+  .reader-meta {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+}
