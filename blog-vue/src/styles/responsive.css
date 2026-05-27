@@ -8,10 +8,41 @@
   }
 
   .feature-card,
-  .tabs button,
-  .hero-slide-card,
-  .hero-feature {
+  .tabs button {
     background: rgba(255, 255, 255, 0.04);
+  }
+
+  .hero-feature {
+    background: var(--paper);
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+  }
+
+  .hero-slide-card {
+    background: var(--soft);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .hero-slide-card .eyebrow {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--muted);
+  }
+
+  .hero-slide-card h4 {
+    color: var(--ink);
+  }
+
+  .hero-slide-card p,
+  .hero-feature-foot span {
+    color: var(--muted);
+  }
+
+  .hero-dots button::after {
+    background: rgba(255, 255, 255, 0.28);
+  }
+
+  .hero-dots button.is-active::after {
+    background: var(--ink);
   }
 
   .category-panel {
