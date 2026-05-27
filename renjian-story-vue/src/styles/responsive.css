@@ -484,9 +484,74 @@
     gap: 0;
   }
 
-  /* Hide sidebar on mobile */
+  /* Hide desktop sidebar on mobile */
   .detail-sidebar {
     display: none;
+  }
+
+  .mobile-detail-toc {
+    position: sticky;
+    top: 56px;
+    z-index: 40;
+    display: block;
+    margin: 0 0 18px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--paper);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+  .mobile-detail-toc summary {
+    min-height: 48px;
+    padding: 13px 16px;
+    color: var(--ink);
+    font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .mobile-detail-toc summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-detail-toc summary::after {
+    float: right;
+    color: var(--muted);
+    content: "展开";
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .mobile-detail-toc[open] summary::after {
+    content: "收起";
+  }
+
+  .mobile-detail-toc nav {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--line);
+    padding: 6px;
+  }
+
+  .mobile-detail-toc a {
+    min-height: 42px;
+    border-radius: 8px;
+    padding: 11px 10px;
+    color: var(--muted);
+    font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .mobile-detail-toc a:hover,
+  .mobile-detail-toc a:focus-visible {
+    background: var(--soft);
+    color: var(--ink);
+    outline: 0;
   }
 
   .detail-main article {
@@ -500,13 +565,18 @@
 
   .article-section {
     margin: 18px 0;
-    scroll-margin-top: 16px;
+    scroll-margin-top: 128px;
   }
 
   .article-subhead {
     margin: 24px 0 6px;
     padding: 8px 0;
     font-size: clamp(16px, 2.5vw, 20px);
+  }
+
+  #practical,
+  #related {
+    scroll-margin-top: 128px;
   }
 
   /* Practical panel */
@@ -671,6 +741,11 @@
   .detail-main p {
     font-size: 15px;
     line-height: 1.8;
+  }
+
+  .mobile-detail-toc {
+    top: 52px;
+    border-radius: 10px;
   }
 
   .practical-grid article {
