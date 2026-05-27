@@ -99,6 +99,10 @@
   color: var(--ink);
 }
 
+.mobile-detail-toc {
+  display: none;
+}
+
 /* Main content */
 .detail-main article {
   max-width: 760px;
