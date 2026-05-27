@@ -6,6 +6,9 @@
       <a href="#stories" @click.prevent="scrollToSection('stories')">故事</a>
       <a href="#keywords" @click.prevent="scrollToSection('keywords')">话题</a>
       <a href="#submit" @click.prevent="scrollToSection('submit')">关于</a>
+      <button class="theme-toggle" @click="toggleTheme" :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'">
+        {{ isDark ? '☀️' : '🌙' }}
+      </button>
     </nav>
   </header>
 
@@ -143,6 +146,15 @@ const { category, applyCategory } = useStories()
 const currentCategory = computed(() => category.value)
 const openGroup = ref(null)
 
+// 主题切换
+const isDark = ref(false)
+
+function toggleTheme() {
+  isDark.value = !isDark.value
+  document.documentElement.setAttribute('data-theme', isDark.value ? 'dark' : 'light')
+  localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+}
+
 function toggleGroup(name) {
   openGroup.value = openGroup.value === name ? null : name
 }
@@ -170,6 +182,15 @@ watch(() => route.fullPath, () => {
 
 onMounted(() => {
   document.addEventListener('click', handleDocumentClick)
+
+  // 读取主题偏好
+  const savedTheme = localStorage.getItem('theme')
+  if (savedTheme) {
+    isDark.value = savedTheme === 'dark'
+    document.documentElement.setAttribute('data-theme', savedTheme)
+  } else {
+    isDark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
+  }
 })
 
 onUnmounted(() => {
@@ -191,3 +212,24 @@ function scrollToSection(sectionId) {
   }
 }
 </script>
+
+<style scoped>
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  min-height: 44px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background: var(--soft);
+  border-color: var(--ink);
+}
+</style>
