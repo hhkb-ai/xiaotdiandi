@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>晓点滴 — Jobs 重设计</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1d1d1f;
+  --muted: #86868b;
+  --faint: #aeaeb2;
+  --accent: #e8612d;
+  --paper: #fafaf8;
+  --line: rgba(0,0,0,0.08);
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Noto Serif SC', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.65; overflow-x: hidden; }
+::selection { background: rgba(232,97,45,0.12); }
+
+/* ===== 顶栏 ===== */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 48px;
+  background: rgba(250,250,248,0.85);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 0.5px solid var(--line);
+}
+.topbar .brand { font-size: 15px; font-weight: 800; letter-spacing: -0.5px; }
+.topbar nav { display: flex; gap: 24px; list-style: none; }
+.topbar nav a { font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.topbar nav a:hover { color: var(--ink); }
+
+/* ===== 诊断标注系统 ===== */
+.issue {
+  position: relative;
+  outline: 2px dashed rgba(232,97,45,0.4);
+  outline-offset: 8px;
+  border-radius: 4px;
+}
+.issue::after {
+  content: attr(data-issue);
+  position: absolute; top: -12px; left: 16px;
+  background: var(--accent); color: #fff;
+  font-size: 11px; font-weight: 700; padding: 3px 10px;
+  border-radius: 4px; letter-spacing: 0.04em; z-index: 10;
+  white-space: nowrap;
+}
+.fix::after { content: attr(data-fix); background: #1d1d1f; }
+
+/* ===== Hero ===== */
+.hero {
+  min-height: min(70vh, 600px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 100px 48px 64px;
+}
+.hero h1 {
+  font-size: clamp(40px, 5.5vw, 64px); font-weight: 900; line-height: 1.06;
+  letter-spacing: -2.5px; color: var(--ink); max-width: 720px; margin-bottom: 24px;
+}
+.hero .sub {
+  font-size: 18px; color: var(--muted); max-width: 480px; line-height: 1.75;
+  margin-bottom: 48px;
+}
+.search-box { width: 100%; max-width: 440px; }
+.search-box input {
+  width: 100%; border: none; border-bottom: 1px solid rgba(0,0,0,0.15);
+  background: transparent; font-size: 16px; padding: 14px 0; color: var(--ink);
+  font-family: var(--font); outline: none; text-align: center; transition: border-color 0.3s;
+}
+.search-box input::placeholder { color: var(--faint); }
+.search-box input:focus { border-bottom-color: var(--accent); border-bottom-width: 2px; }
+.search-box .hints {
+  display: flex; justify-content: center; gap: 6px; margin-top: 12px; flex-wrap: wrap;
+}
+.search-box .hint {
+  font-size: 12px; color: var(--faint); background: rgba(0,0,0,0.025);
+  padding: 4px 10px; border-radius: 100px; cursor: pointer; transition: all 0.2s;
+}
+.search-box .hint:hover { background: rgba(0,0,0,0.05); color: var(--muted); }
+
+/* ===== 分类 ===== */
+.cats { display: flex; justify-content: center; gap: 28px; padding: 12px 24px 0; flex-wrap: wrap; }
+.cats a {
+  font-size: 13px; font-weight: 500; color: var(--faint); text-decoration: none;
+  padding: 4px 0 6px; position: relative; transition: color 0.2s;
+}
+.cats a::after {
+  content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 1.5px;
+  background: var(--accent); transition: all 0.25s; transform: translateX(-50%);
+}
+.cats a:hover, .cats a.on { color: var(--ink); }
+.cats a.on::after { width: 100%; }
+
+/* ===== 内容区 ===== */
+.content { padding: 0 48px; }
+
+/* 编辑推荐 */
+.pick {
+  display: grid; grid-template-columns: 1.4fr 1fr;
+  border-top: 0.5px solid var(--line); margin-top: 56px;
+}
+.pick-main { padding: 48px 48px 48px 0; border-right: 0.5px solid var(--line); }
+.pick-main .tag {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 14px; display: block;
+}
+.pick-main h2 {
+  font-size: clamp(28px, 3vw, 38px); font-weight: 800; line-height: 1.12;
+  letter-spacing: -1px; margin-bottom: 14px;
+}
+.pick-main .desc { font-size: 15px; color: var(--muted); line-height: 1.75; margin-bottom: 20px; }
+.read-link {
+  font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 4px; transition: gap 0.25s;
+}
+.read-link::after { content: '→'; transition: transform 0.25s; }
+.read-link:hover::after { transform: translateX(4px); }
+
+.pick-side { padding: 48px 0 48px 48px; display: flex; flex-direction: column; justify-content: center; }
+.pick-side h3 { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+.pick-list { list-style: none; }
+.pick-list li {
+  font-size: 14px; color: var(--muted); line-height: 1.6; padding: 9px 0;
+  border-bottom: 0.5px solid var(--line); display: flex; align-items: baseline; gap: 10px;
+}
+.pick-list li:last-child { border-bottom: none; }
+.pick-list li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 6px; }
+
+/* 文章网格 */
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 0.5px solid var(--line); margin-top: 0; }
+.cell {
+  padding: 32px; cursor: pointer; transition: background 0.15s;
+  border-bottom: 0.5px solid var(--line); border-right: 0.5px solid var(--line);
+}
+.cell:nth-child(3n) { border-right: none; }
+.cell:hover { background: rgba(0,0,0,0.015); }
+.cell .m { font-size: 11px; color: var(--faint); font-weight: 600; margin-bottom: 10px; letter-spacing: 0.04em; }
+.cell h3 { font-size: 17px; font-weight: 700; line-height: 1.35; letter-spacing: -0.2px; margin-bottom: 8px; transition: color 0.15s; }
+.cell:hover h3 { color: var(--accent); }
+.cell p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+/* 列表 */
+.rows { border-top: 0.5px solid var(--line); }
+.rows-head { display: flex; align-items: center; justify-content: space-between; padding: 20px 48px; }
+.rows-head .lbl { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.rows-head .ct { font-size: 12px; color: var(--faint); }
+.row {
+  display: flex; align-items: baseline; gap: 20px;
+  padding: 16px 48px; cursor: pointer; transition: background 0.15s;
+  border-top: 0.5px solid var(--line);
+}
+.row:hover { background: rgba(0,0,0,0.015); }
+.row .i { font-size: 12px; font-weight: 700; color: var(--faint); min-width: 22px; font-variant-numeric: tabular-nums; }
+.row .b { flex: 1; }
+.row h3 { font-size: 15px; font-weight: 700; line-height: 1.35; letter-spacing: -0.15px; margin-bottom: 2px; transition: color 0.15s; }
+.row:hover h3 { color: var(--accent); }
+.row .s { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.row .a { font-size: 13px; color: var(--faint); flex-shrink: 0; transition: color 0.15s; }
+.row:hover .a { color: var(--accent); }
+
+/* 话题 */
+.topics { border-top: 0.5px solid var(--line); padding: 40px 48px; }
+.topics .h { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+.topics .h .l { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.topics .h .ln { flex: 1; height: 0.5px; background: var(--line); }
+.topics .cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+.topics .cloud a {
+  font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none;
+  padding: 6px 14px; border: 0.5px solid var(--line); border-radius: 100px; transition: all 0.2s;
+}
+.topics .cloud a:hover { color: var(--ink); border-color: rgba(0,0,0,0.12); background: rgba(0,0,0,0.015); }
+
+/* 底部 */
+.footer { border-top: 0.5px solid var(--line); padding: 48px; text-align: center; }
+.footer p { font-size: 14px; color: var(--muted); line-height: 1.8; max-width: 480px; margin: 0 auto; }
+.sub-row { display: flex; gap: 12px; max-width: 360px; margin: 20px auto 0; }
+.sub-row input {
+  flex: 1; border: none; border-bottom: 0.5px solid var(--line);
+  background: transparent; font-size: 13px; padding: 8px 0; color: var(--ink);
+  font-family: var(--font); outline: none; transition: border-color 0.2s;
+}
+.sub-row input::placeholder { color: var(--faint); }
+.sub-row input:focus { border-bottom-color: var(--accent); border-bottom-width: 1px; }
+.sub-row button {
+  background: var(--ink); color: #fff; border: none; padding: 8px 18px;
+  border-radius: 100px; font-size: 12px; font-weight: 600; cursor: pointer;
+  font-family: var(--font); transition: background 0.2s;
+}
+.sub-row button:hover { background: var(--accent); }
+.footer .note { margin-top: 6px; font-size: 11px; color: var(--faint); }
+.footer .icp { margin-top: 32px; font-size: 11px; color: var(--faint); }
+
+/* 标注 */
+.badge {
+  position: fixed; bottom: 16px; right: 16px; background: var(--ink); color: #fff;
+  padding: 8px 14px; border-radius: 8px; font-size: 11px; font-weight: 600; z-index: 200;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.1);
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 1024px) {
+  .pick { grid-template-columns: 1fr; }
+  .pick-main { border-right: none; border-bottom: 0.5px solid var(--line); padding-right: 0; padding-bottom: 32px; }
+  .pick-side { padding-left: 0; padding-top: 32px; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .cell:nth-child(3n) { border-right: 0.5px solid var(--line); }
+  .cell:nth-child(2n) { border-right: none; }
+}
+@media (max-width: 768px) {
+  .topbar { padding: 0 24px; }
+  .hero { min-height: 56vh; padding: 96px 24px 40px; }
+  .hero h1 { font-size: 32px; letter-spacing: -1px; }
+  .hero .sub { font-size: 15px; margin-bottom: 32px; }
+  .cats { gap: 16px; padding: 8px 16px 0; }
+  .cats a { font-size: 12px; }
+  .content { padding: 0 24px; }
+  .pick-main, .pick-side { padding: 24px 0; }
+  .grid { grid-template-columns: 1fr; }
+  .cell { border-right: none !important; padding: 24px; }
+  .rows-head, .row { padding-left: 24px; padding-right: 24px; }
+  .topics, .footer { padding-left: 24px; padding-right: 24px; }
+  .issue { outline: none; }
+  .issue::after { display: none; }
+  .badge { display: none; }
+}
+@media (max-width: 480px) {
+  .hero { min-height: 50vh; padding: 88px 20px 32px; }
+  .hero h1 { font-size: 28px; }
+  .sub-row { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- 顶栏 -->
+<div class="topbar">
+  <span class="brand">晓点滴</span>
+  <nav>
+    <a href="#stories">故事</a>
+    <a href="#topics">话题</a>
+    <a href="#about">关于</a>
+  </nav>
+</div>
+
+<!--
+  ========================================
+  乔布斯诊断：当前首页的问题
+  ========================================
+  用橙色虚线框标注问题区域，鼠标悬停看说明。
+  下方紧跟修复后的设计。
+-->
+
+<!-- ===== 问题 1：Hero 太挤 ===== -->
+<!--
+  当前 Hero 同时放了：标题、副标题、搜索框、搜索标签、精选轮播。
+  乔布斯会问："用户进站第一秒，你想让他看到什么？"
+  答案应该只有一个。
+-->
+<section class="hero">
+  <!-- FIX: 只留一句话 + 搜索，去掉轮播、去掉副标题的冗余信息 -->
+  <h1 class="fix" data-fix="修复：标题是唯一焦点，去掉轮播和多余副标题">校园里的小事，<br>也值得被认真记下。</h1>
+  <p class="sub">从开学到毕业，帮你少走弯路的校园指南。</p>
+  <div class="search-box">
+    <input type="text" placeholder="搜索校园故事...">
+    <div class="hints">
+      <span class="hint">四六级</span>
+      <span class="hint">学生优惠</span>
+      <span class="hint">宿舍</span>
+      <span class="hint">考试周</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 问题 2：轮播是噪音 ===== -->
+<!--
+  当前有一个自动播放的轮播（setInterval 5000ms）。
+  乔布斯从不在 Apple.com 用自动轮播。
+  轮播里的内容和下方精选重复——同一篇文章出现三次。
+-->
+<!-- FIX: 去掉轮播，用一个静态的编辑推荐替代 -->
+
+<!-- 分类 -->
+<nav class="cats">
+  <a href="#" class="on">全部</a>
+  <a href="#">校园日常</a>
+  <a href="#">学习知识</a>
+  <a href="#">实用知识</a>
+  <a href="#">求职复盘</a>
+  <a href="#">安全情绪</a>
+</nav>
+
+<!-- ===== 问题 3：区块太多（7+ 个） ===== -->
+<!--
+  当前首页有：Hero、分类栏、Spotlight、Practical Shelf、
+  Latest、Quality、Archive、Keywords、About、Subscribe。
+  10 个区块，用户要滚动 10 次。
+  乔布斯会砍到 3 个：Hero + 精选 + 收尾。
+-->
+<!-- FIX: 只保留 3 个内容区块：编辑推荐、文章网格、话题+底部 -->
+
+<section class="content" id="stories">
+
+  <!-- 编辑推荐（替代轮播 + Spotlight） -->
+  <div class="pick">
+    <div class="pick-main">
+      <span class="tag">Editor's Pick</span>
+      <h2>四六级备考全攻略<br>从报名到拿证</h2>
+      <p class="desc">报名时间、复习节奏、考场策略、查分流程——一篇讲完所有你该知道的事。</p>
+      <a href="#" class="read-link">阅读全文</a>
+    </div>
+    <div class="pick-side">
+      <h3>先看什么</h3>
+      <ul class="pick-list">
+        <li>明确报名时间和流程</li>
+        <li>30 天复习计划</li>
+        <li>考场时间分配策略</li>
+        <li>查分和成绩复核方法</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== 问题 4：卡片信息过载 ===== -->
+  <!--
+    当前每张卡片有 6 个元素：分类标签、日期、标题、摘要、takeaway、footer。
+    乔布斯的原则：一张卡片只传递一个信息。
+  -->
+  <!-- FIX: 每个格子只有标题 + 一行摘要，去掉标签、日期、takeaway -->
+  <div class="grid">
+    <article class="cell">
+      <p class="m">实用知识</p>
+      <h3>学生优惠全指南</h3>
+      <p>Apple 教育优惠、各大平台学生价、校园卡的 12 种用法。</p>
+    </article>
+    <article class="cell">
+      <p class="m">求职复盘</p>
+      <h3>大厂实习六个月后</h3>
+      <p>从入职的兴奋到离开时的清醒，关于成长节奏和选择的反思。</p>
+    </article>
+    <article class="cell">
+      <p class="m">校园日常</p>
+      <h3>宿舍关系指南</h3>
+      <p>四种常见室友类型，有些矛盾只需要调整期待和边界。</p>
+    </article>
+  </div>
+
+  <!-- ===== 问题 5：Sidebar 在浪费空间 ===== -->
+  <!--
+    当前 sidebar 占桌面端 1/3 宽度，放了"校园故事"、"当前范围"、"快捷入口"。
+    这些信息要么可以推断，要么不需要单独展示。
+  -->
+  <!-- FIX: 去掉 sidebar，内容直接铺满可用宽度 -->
+
+  <!-- ===== 问题 6：视觉噪音（边框、阴影、translateY） ===== -->
+  <!--
+    当前每张卡片都有 border: 1px solid + hover 时 border-color + box-shadow + translateY。
+    加上 eyebrow 标签、分类色块、日期标签——装饰太多。
+    乔布斯："设计不是装饰，是让东西工作。"
+  -->
+  <!-- FIX: 用 0.5px 细线分割，hover 只加极淡背景色，无阴影无位移 -->
+  <div class="rows">
+    <div class="rows-head">
+      <span class="lbl">Archive</span>
+      <span class="ct">更多内容</span>
+    </div>
+    <div class="row">
+      <span class="i">01</span>
+      <div class="b">
+        <h3>防诈骗实录</h3>
+        <p class="s">兼职刷单、冒充客服、虚假贷款——真实案例讲清楚每种骗局。</p>
+      </div>
+      <span class="a">→</span>
+    </div>
+    <div class="row">
+      <span class="i">02</span>
+      <div class="b">
+        <h3>考试周生存手册</h3>
+        <p class="s">不是比谁聪明，是比谁能在有限时间里做最合理的取舍。</p>
+      </div>
+      <span class="a">→</span>
+    </div>
+    <div class="row">
+      <span class="i">03</span>
+      <div class="b">
+        <h3>求职反套路攻略</h3>
+        <p class="s">从简历到面试到谈薪，拆解 HR 不会告诉你的那些事。</p>
+      </div>
+      <span class="a">→</span>
+    </div>
+  </div>
+
+  <!-- ===== 问题 7：搜索被藏在 Hero 里 ===== -->
+  <!--
+    当前搜索框放在 Hero 副标题下方，作为普通表单元素。
+    对内容网站来说搜索是核心交互，应该被突出。
+  -->
+  <!-- FIX: 搜索提到 Hero 正中央，无边框底线设计，是页面的视觉锚点 -->
+
+</section>
+
+<!-- 话题 -->
+<section class="topics" id="topics">
+  <div class="h">
+    <span class="l">Topics</span>
+    <span class="ln"></span>
+  </div>
+  <div class="cloud">
+    <a href="#">宿舍</a><a href="#">四六级</a><a href="#">学生优惠</a>
+    <a href="#">考试周</a><a href="#">求职</a><a href="#">实习</a>
+    <a href="#">面试</a><a href="#">省钱</a><a href="#">防诈骗</a>
+    <a href="#">时间管理</a><a href="#">社团</a><a href="#">论文</a>
+  </div>
+</section>
+
+<!-- 底部 -->
+<footer class="footer" id="about">
+  <p>记录个人校园经历，整理身边的真实校园故事。内容朴素、可执行、不需要注册。</p>
+  <div class="sub-row">
+    <input type="email" placeholder="your@email.com">
+    <button>订阅</button>
+  </div>
+  <p class="note">邮箱仅保存在浏览器本地</p>
+  <p class="icp">粤ICP备2026055306号-1</p>
+</footer>
+
+<div class="badge">Jobs 重设计 · 诊断+修复</div>
+
+</body>
+</html>
