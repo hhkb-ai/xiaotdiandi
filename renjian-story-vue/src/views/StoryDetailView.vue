@@ -26,7 +26,6 @@
 
           <div class="sidebar-links">
             <a href="#practical">实用信息</a>
-            <a v-for="item in sectionNavItems" :key="item.id" :href="`#${item.id}`">{{ item.title }}</a>
             <a v-if="relatedStories.length" href="#related">相关推荐</a>
             <a href="#" @click.prevent="goBack">返回列表</a>
           </div>
@@ -34,16 +33,6 @@
       </aside>
 
       <main class="detail-main">
-        <details class="mobile-detail-toc">
-          <summary>目录</summary>
-          <nav aria-label="移动端文章目录">
-            <a href="#practical">实用信息</a>
-            <a v-for="item in sectionNavItems" :key="item.id" :href="`#${item.id}`">{{ item.title }}</a>
-            <a v-if="relatedStories.length" href="#related">相关推荐</a>
-            <a href="#" @click.prevent="goBack">返回列表</a>
-          </nav>
-        </details>
-
         <article>
           <div v-for="(section, i) in story.content" :key="i" :id="`section-${i}`" class="article-section">
             <h3 v-if="isSectionHeader(section)" class="article-subhead">{{ section }}</h3>
@@ -329,18 +318,6 @@ const readingTime = computed(() => {
 const relatedStories = computed(() => {
   if (!story.value) return []
   return getRelatedStories(story.value, 3)
-})
-
-const sectionNavItems = computed(() => {
-  if (!story.value?.content) return []
-  return story.value.content
-    .map((section, index) => ({ section, index }))
-    .filter(item => isSectionHeader(item.section))
-    .slice(0, 6)
-    .map(item => ({
-      id: `section-${item.index}`,
-      title: item.section.replace(/^[一二三四五六七八九十]+[、.]/, '').trim()
-    }))
 })
 
 const safeExternalLinks = computed(() => {
