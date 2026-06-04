@@ -23,10 +23,17 @@ main,
 
 .site-nav {
   display: flex;
+  align-items: center;
   gap: 24px;
   color: var(--muted);
   font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 14px;
+}
+
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
 }
 
 .site-nav a:hover {

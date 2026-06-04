@@ -122,6 +122,12 @@
   line-height: 1.55;
 }
 
+.sidebar-context {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
 .sidebar-links {
   display: grid;
   gap: 8px;

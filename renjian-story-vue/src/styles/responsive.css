@@ -421,12 +421,9 @@
     min-height: 44px;
   }
 
-  /* --- Sidebar (homepage) --- */
+  /* --- Sidebar (homepage): hidden on mobile --- */
   .sidebar {
-    position: static;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 8px;
+    display: none;
   }
 
   .sidebar-block {

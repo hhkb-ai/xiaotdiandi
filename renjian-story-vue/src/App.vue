@@ -7,7 +7,7 @@
       <a href="#keywords" @click.prevent="scrollToSection('keywords')">话题</a>
       <a href="#submit" @click.prevent="scrollToSection('submit')">关于</a>
       <button class="theme-toggle" @click="toggleTheme" :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'">
-        {{ isDark ? '☀️' : '🌙' }}
+        <span aria-hidden="true">{{ isDark ? '☀️' : '🌙' }}</span>
       </button>
     </nav>
   </header>
@@ -215,21 +215,34 @@ function scrollToSection(sectionId) {
 
 <style scoped>
 .theme-toggle {
-  background: none;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
   border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  padding: 6px 10px;
-  min-height: 44px;
-  font-size: 16px;
+  border-radius: 10px;
+  background: none;
   cursor: pointer;
   transition: all 0.2s;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  font-size: 15px;
+  line-height: 1;
 }
 
 .theme-toggle:hover {
   background: var(--soft);
   border-color: var(--ink);
+}
+
+.theme-toggle span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  line-height: 1;
 }
 </style>
