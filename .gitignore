@@ -1,6 +1,7 @@
 node_modules/
 *.log
 renjian-story-shop-backup-20260515/
+renjian-story-shop/backup-original/
 test-vue-deploy/
 .DS_Store
 Thumbs.db
