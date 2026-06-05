@@ -87,12 +87,12 @@ export function useSeo() {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
         'name': '晓点滴',
-        'url': 'https://apiuspro.cn/',
+        'url': 'https://unietalk.cn/',
         'description': config.description,
         'inLanguage': 'zh-CN',
         'potentialAction': {
           '@type': 'SearchAction',
-          'target': 'https://apiuspro.cn/#stories',
+          'target': 'https://unietalk.cn/#stories',
           'query-input': 'required name=search_term_string'
         }
       })
@@ -104,7 +104,7 @@ export function useSeo() {
         'description': story.summary,
         'author': { '@type': 'Person', 'name': story.author },
         'datePublished': story.date,
-        'url': `https://apiuspro.cn/story/${story.id}`
+        'url': `https://unietalk.cn/story/${story.id}`
       })
     }
   }
