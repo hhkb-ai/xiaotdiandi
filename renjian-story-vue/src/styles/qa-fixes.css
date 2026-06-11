@@ -1,0 +1,63 @@
+/* QA layout fixes: content typography, card clipping, and touch targets */
+
+.feed-card-title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.sidebar-cat-item,
+.sidebar-keyword-item {
+  min-height: 44px;
+}
+
+.sidebar-meta h1 {
+  font-size: clamp(22px, 2.8vw, 30px);
+  line-height: 1.28;
+}
+
+.article-mobile-header {
+  display: none;
+}
+
+@media (max-width: 780px) {
+  .article-mobile-header {
+    display: block;
+    margin: 0 0 22px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 18px;
+  }
+
+  .article-mobile-header .card-tags {
+    margin-bottom: 10px;
+  }
+
+  .article-mobile-header h1 {
+    margin: 0 0 12px;
+    color: var(--ink);
+    font-size: clamp(24px, 7vw, 34px);
+    font-weight: 650;
+    line-height: 1.28;
+    letter-spacing: -0.035em;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .article-mobile-header .reader-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    margin: 0 0 12px;
+    color: var(--muted);
+    font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 12px;
+  }
+
+  .article-mobile-summary {
+    margin: 0;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+}
