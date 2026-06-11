@@ -34,6 +34,20 @@
 
       <main class="detail-main">
         <article>
+          <header class="article-mobile-header">
+            <div class="card-tags">
+              <span>{{ story.category }}</span>
+            </div>
+            <h1>{{ story.title }}</h1>
+            <div class="reader-meta">
+              <span>{{ story.author }}</span>
+              <span>{{ story.date }}</span>
+              <span>{{ readingTime }} 分钟阅读</span>
+              <span>{{ wordCount }} 字</span>
+            </div>
+            <p class="article-mobile-summary">{{ story.summary }}</p>
+          </header>
+
           <div v-for="(section, i) in story.content" :key="i" :id="`section-${i}`" class="article-section">
             <h3 v-if="isSectionHeader(section)" class="article-subhead">{{ section }}</h3>
             <p v-else v-html="highlightContent(section)"></p>
