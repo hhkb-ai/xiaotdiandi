@@ -63,7 +63,9 @@ export function useSeo() {
       config = tdkConfig.category[params.category] || tdkConfig.home
     } else if (tdk === 'story' && story) {
       config = {
-        title: tdkConfig.storyTemplate.title.replace('{title}', story.title),
+        title: tdkConfig.storyTemplate.title
+          .replace('{title}', story.title)
+          .replace('{category}', story.category),
         description: tdkConfig.storyTemplate.description.replace('{summary}', story.summary),
         keywords: (story.keywords || []).slice(0, 10).join(','),
         canonical: tdkConfig.storyTemplate.canonical.replace('{id}', story.id)
