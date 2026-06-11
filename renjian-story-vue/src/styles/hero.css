@@ -52,6 +52,10 @@
   box-shadow: 0 0 0 3px rgba(25, 24, 22, 0.08);
 }
 
+.home-search input::placeholder {
+  color: var(--muted);
+}
+
 .home-search small {
   color: var(--muted);
   font-size: 12px;
@@ -92,4 +96,26 @@
   .home-header-desc {
     font-size: 12px;
   }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .home-search input {
+    border-color: var(--line);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--ink);
+  }
+
+  :root:not([data-theme='light']) .home-search input:focus {
+    box-shadow: 0 0 0 3px rgba(232, 228, 222, 0.12);
+  }
+}
+
+[data-theme='dark'] .home-search input {
+  border-color: var(--line);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--ink);
+}
+
+[data-theme='dark'] .home-search input:focus {
+  box-shadow: 0 0 0 3px rgba(232, 228, 222, 0.12);
 }
