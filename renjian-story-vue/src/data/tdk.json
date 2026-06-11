@@ -1,9 +1,9 @@
 {
   "home": {
-    "title": "晓点滴｜校园经历、校园故事与学生生活记录",
+    "title": "晓点滴-大学生校园生活实用指南 | 校园故事四六级备考",
     "description": "晓点滴记录个人校园经历与真实校园故事，覆盖大学宿舍生活、考试周复习、四六级备考、学生优惠、省钱攻略、求职复盘、校园安全、情绪调整和毕业回忆等学生生活记录。",
-    "keywords": "校园故事,校园生活,学习成长,实用知识,求职复盘,安全与情绪",
-    "ogTitle": "晓点滴｜校园经历、校园故事与学生生活记录",
+    "keywords": "校园故事,校园生活,大学生活,四六级备考,学生优惠,求职复盘",
+    "ogTitle": "晓点滴-大学生校园生活实用指南 | 校园故事四六级备考",
     "ogDescription": "晓点滴记录个人校园经历与真实校园故事，覆盖宿舍生活、考试复习、四六级备考、学生优惠、求职复盘、校园安全、情绪调整和毕业回忆等学生生活记录。",
     "ogUrl": "https://unietalk.cn/",
     "canonical": "https://unietalk.cn/"
@@ -26,10 +26,58 @@
       "description": "校园安全注意事项、学生防诈骗、情绪调整方法等。",
       "keywords": "安全情绪,校园安全,防诈骗,情绪管理",
       "canonical": "https://unietalk.cn/category/安全情绪"
+    },
+    "校园生活": {
+      "title": "校园生活-晓点滴 | 宿舍食堂快递校园卡实用经验",
+      "description": "晓点滴校园生活栏目，整理大学宿舍、食堂、快递、校园卡、早八、选课和日常避坑经验。",
+      "keywords": "校园生活,大学宿舍,大学食堂,校园卡,校园快递,早八,选课技巧",
+      "canonical": "https://unietalk.cn/category/校园生活"
+    },
+    "学习成长": {
+      "title": "学习成长-晓点滴 | 考试复习课堂笔记选课方法",
+      "description": "晓点滴学习成长栏目，分享考试复习、课堂笔记、选课方法、学习规划和大学学习效率经验。",
+      "keywords": "学习成长,考试复习,课堂笔记,选课方法,大学学习,学习规划",
+      "canonical": "https://unietalk.cn/category/学习成长"
+    },
+    "实用知识": {
+      "title": "实用知识-晓点滴 | 四六级备考学生优惠省钱攻略",
+      "description": "晓点滴实用知识栏目，整理四六级备考、学生优惠、补贴查询、省钱攻略和校园实用信息。",
+      "keywords": "实用知识,四六级备考,学生优惠,大学生补贴,省钱攻略,学生票",
+      "canonical": "https://unietalk.cn/category/实用知识"
+    },
+    "求职复盘": {
+      "title": "求职复盘-晓点滴 | 实习校招面试简历经验分享",
+      "description": "晓点滴求职复盘栏目，记录大学生实习、校招、面试、简历修改和求职避坑经验。",
+      "keywords": "求职复盘,大学生实习,校招面试,简历经验,求职经验,面试复盘",
+      "canonical": "https://unietalk.cn/category/求职复盘"
+    },
+    "安全与情绪": {
+      "title": "安全与情绪-晓点滴 | 防诈骗宿舍安全情绪调整",
+      "description": "晓点滴安全与情绪栏目，整理校园防诈骗、宿舍安全、情绪调整、压力管理和学生安全提醒。",
+      "keywords": "安全与情绪,校园防诈骗,宿舍安全,情绪调整,压力管理,学生安全",
+      "canonical": "https://unietalk.cn/category/安全与情绪"
+    },
+    "毕业与回忆": {
+      "title": "毕业与回忆-晓点滴 | 毕业季告别校园备忘录",
+      "description": "晓点滴毕业与回忆栏目，记录毕业季、离校清单、校园告别、同学回忆和大学收尾事项。",
+      "keywords": "毕业与回忆,毕业季,离校清单,校园回忆,大学毕业,毕业备忘录",
+      "canonical": "https://unietalk.cn/category/毕业与回忆"
+    },
+    "活动与关系": {
+      "title": "活动与关系-晓点滴 | 社团活动运动会同学相处",
+      "description": "晓点滴活动与关系栏目，分享社团活动、运动会、同学相处、宿舍关系和校园人际经验。",
+      "keywords": "活动与关系,社团活动,运动会,同学相处,宿舍关系,校园人际",
+      "canonical": "https://unietalk.cn/category/活动与关系"
+    },
+    "网络梗知识": {
+      "title": "网络梗知识-晓点滴 | 热梗解释流行语使用场景",
+      "description": "晓点滴网络梗知识栏目，解释校园常见热梗、网络流行语、表达场景和使用边界。",
+      "keywords": "网络梗知识,热梗解释,网络流行语,校园热梗,流行语使用,网络文化",
+      "canonical": "https://unietalk.cn/category/网络梗知识"
     }
   },
   "storyTemplate": {
-    "title": "{title}｜晓点滴",
+    "title": "{title}-{category}-晓点滴",
     "description": "{summary}",
     "keywords": "{keywords}",
     "canonical": "https://unietalk.cn/story/{id}"
