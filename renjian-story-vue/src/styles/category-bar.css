@@ -175,8 +175,6 @@
     z-index: 90;
     display: block;
     background: rgba(0, 0, 0, 0.36);
-    -webkit-backdrop-filter: blur(2px);
-    backdrop-filter: blur(2px);
   }
 
   .category-group::after {

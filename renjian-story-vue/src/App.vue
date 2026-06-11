@@ -342,8 +342,6 @@ function scrollToSection(sectionId) {
     inset: 0;
     z-index: 90;
     background: rgba(0, 0, 0, 0.36);
-    -webkit-backdrop-filter: blur(2px);
-    backdrop-filter: blur(2px);
   }
 
   /* 菜单面板 — v-if 控制渲染，fixed 定位确保不被裁切 */
