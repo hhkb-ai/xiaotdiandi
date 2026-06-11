@@ -10,16 +10,47 @@
         <span aria-hidden="true">{{ isDark ? '☀️' : '🌙' }}</span>
       </button>
     </nav>
+    <button
+      class="mobile-menu-btn"
+      type="button"
+      :aria-label="isMobileMenuOpen ? '关闭菜单' : '打开菜单'"
+      :aria-expanded="isMobileMenuOpen"
+      @click="toggleMobileMenu"
+    >
+      <span aria-hidden="true">{{ isMobileMenuOpen ? '✕' : '☰' }}</span>
+    </button>
   </header>
 
-  <nav class="category-bar" aria-label="顶部分类">
+  <!-- 移动端菜单 -->
+  <template v-if="isMobileMenuOpen">
     <div
-      v-if="openGroup"
-      class="category-overlay"
+      class="mobile-menu-overlay"
+      @click="closeMobileMenu"
       aria-hidden="true"
-      @click.stop="closeGroups"
     ></div>
+    <nav
+      class="mobile-menu-panel"
+      aria-label="移动端导航"
+    >
+      <a href="#stories" @click.prevent="scrollToSection('stories'); closeMobileMenu()">故事</a>
+      <a href="#keywords" @click.prevent="scrollToSection('keywords'); closeMobileMenu()">话题</a>
+      <a href="#submit" @click.prevent="scrollToSection('submit'); closeMobileMenu()">关于</a>
+      <button class="theme-toggle mobile-theme-toggle" @click="toggleTheme" :aria-label="isDark ? '切换到浅色模式' : '切换到深色模式'">
+        <span aria-hidden="true">{{ isDark ? '☀️' : '🌙' }}</span>
+        <span>{{ isDark ? '浅色模式' : '深色模式' }}</span>
+      </button>
+    </nav>
+  </template>
 
+  <!-- 分类遮罩层 — 放在 category-bar 外部，避免 backdrop-filter containing block 限制 -->
+  <div
+    v-if="openGroup"
+    class="category-overlay"
+    aria-hidden="true"
+    @click.stop="closeGroups"
+  ></div>
+
+  <nav class="category-bar" aria-label="顶部分类">
     <router-link
       class="category-pill"
       :class="{ 'is-active': currentCategory === '全部' }"
@@ -145,6 +176,7 @@ const { category, applyCategory } = useStories()
 
 const currentCategory = computed(() => category.value)
 const openGroup = ref(null)
+const isMobileMenuOpen = ref(false)
 
 // 主题切换
 const isDark = ref(false)
@@ -163,6 +195,16 @@ function closeGroups() {
   openGroup.value = null
 }
 
+function toggleMobileMenu() {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value
+  document.body.style.overflow = isMobileMenuOpen.value ? 'hidden' : ''
+}
+
+function closeMobileMenu() {
+  isMobileMenuOpen.value = false
+  document.body.style.overflow = ''
+}
+
 function selectCategory(name) {
   applyCategory(name)
   closeGroups()
@@ -178,6 +220,7 @@ watch(openGroup, value => {
 
 watch(() => route.fullPath, () => {
   closeGroups()
+  closeMobileMenu()
 })
 
 onMounted(() => {
@@ -196,6 +239,7 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener('click', handleDocumentClick)
   document.body.classList.remove('is-category-panel-open')
+  document.body.style.overflow = ''
 })
 
 function scrollToSection(sectionId) {
@@ -244,5 +288,121 @@ function scrollToSection(sectionId) {
   width: 1em;
   height: 1em;
   line-height: 1;
+}
+
+/* 汉堡按钮 — 桌面端隐藏 */
+.mobile-menu-btn {
+  display: none;
+}
+
+/* 移动端菜单遮罩和面板 — 基础隐藏，仅在 v-if 渲染后生效 */
+.mobile-menu-overlay {
+  display: none;
+}
+
+.mobile-menu-panel {
+  display: none;
+}
+
+@media (max-width: 780px) {
+  /* 桌面导航隐藏，显示汉堡按钮 */
+  .site-nav {
+    display: none !important;
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: none;
+    color: var(--ink);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .mobile-menu-btn:hover {
+    background: var(--soft);
+    border-color: var(--ink);
+  }
+
+  /* 遮罩 */
+  .mobile-menu-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: rgba(0, 0, 0, 0.36);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+  }
+
+  /* 菜单面板 — v-if 控制渲染，fixed 定位确保不被裁切 */
+  .mobile-menu-panel {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 100;
+    width: min(280px, 80vw);
+    height: 100dvh;
+    padding: 16px;
+    padding-top: calc(16px + env(safe-area-inset-top, 0));
+    padding-bottom: calc(16px + env(safe-area-inset-bottom, 0));
+    background: var(--menu-bg);
+    border-left: 1px solid var(--line);
+    box-shadow: -12px 0 40px var(--shadow);
+    overflow-y: auto;
+    gap: 4px;
+  }
+
+  .mobile-menu-panel a {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: var(--ink);
+    font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .mobile-menu-panel a:hover {
+    background: var(--menu-hover);
+  }
+
+  .mobile-theme-toggle {
+    margin-top: auto;
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  .mobile-theme-toggle:hover {
+    background: var(--soft);
+  }
 }
 </style>

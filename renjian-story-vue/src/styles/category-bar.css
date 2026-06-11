@@ -141,10 +141,29 @@
   .category-group-study.is-open .category-panel {
     transform: translate(-50%, 0);
   }
+
+  .category-bar:has(.category-group:hover) .category-group:not(:hover) .category-panel {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-6px);
+    visibility: hidden;
+  }
+
+  .category-bar:has(.category-group:hover) .category-group-study:not(:hover) .category-panel {
+    transform: translate(-50%, -6px);
+  }
 }
 
 /* Mobile: bottom sheet with overlay and body lock */
 @media (max-width: 780px) {
+  .category-bar {
+    z-index: auto;
+    /* 移除 backdrop-filter：它会创建 containing block，导致
+       position: fixed 的子面板被限制在 category-bar 范围内定位 */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
   body.is-category-panel-open {
     overflow: hidden;
     touch-action: none;
@@ -170,10 +189,10 @@
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 9999;
     width: 100%;
     max-width: 100%;
-    max-height: min(72vh, 520px);
+    max-height: min(70dvh, 520px);
     overflow-y: auto;
     border: none;
     border-top: 1px solid var(--line);
