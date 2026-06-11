@@ -53,24 +53,24 @@
           <p class="category-count">显示 {{ categoryStories.length }} 篇内容</p>
         </div>
 
-        <div class="story-grid">
+        <div class="category-card-grid">
           <article
             v-for="story in sortedCategoryStories"
             :key="story.id"
-            class="story-card"
+            class="category-card"
+            tabindex="0"
             @click="openStory(story.id)"
+            @keydown.enter.prevent="openStory(story.id)"
           >
-            <div class="story-card-header">
-              <div class="card-tags">
-                <span>{{ story.category }}</span>
-              </div>
-              <span class="story-date">{{ story.date }}</span>
+            <div class="category-card-meta">
+              <span class="category-card-tag">{{ story.category }}</span>
+              <span class="category-card-date">{{ story.date }}</span>
             </div>
             <h3>{{ story.title }}</h3>
             <p>{{ story.summary }}</p>
-            <div class="story-card-footer">
-              <span class="reading-time">{{ getReadingTime(story) }} 分钟阅读</span>
-              <button class="text-button" type="button">阅读全文</button>
+            <div class="category-card-footer">
+              <span>{{ getReadingTime(story) }} 分钟阅读</span>
+              <span class="category-card-link">阅读全文</span>
             </div>
           </article>
         </div>
@@ -82,7 +82,6 @@
         </div>
       </main>
     </div>
-
   </section>
 </template>
 
@@ -219,47 +218,52 @@ watch(() => route.params.category, (newCat) => {
 
 <style scoped>
 .category-view {
-  max-width: 1200px;
+  max-width: 1180px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
 .category-header {
-  padding: 48px 0 32px;
+  padding: 44px 0 30px;
   border-bottom: 1px solid var(--line);
 }
 
 .category-header-content {
+  max-width: 760px;
   margin-top: 24px;
 }
 
 .category-header h1 {
-  font-size: 48px;
-  font-weight: 600;
+  margin: 8px 0 14px;
   color: var(--ink);
-  margin: 8px 0 16px;
-  letter-spacing: -0.5px;
+  font-size: clamp(34px, 5vw, 52px);
+  font-weight: 650;
+  line-height: 1.12;
+  letter-spacing: -0.04em;
 }
 
 .category-description {
-  font-size: 18px;
+  max-width: 680px;
+  margin: 0 0 16px;
   color: var(--muted);
-  line-height: 1.6;
-  margin-bottom: 16px;
+  font-size: 17px;
+  line-height: 1.75;
 }
 
 .category-stats {
   display: flex;
-  gap: 24px;
-  font-size: 14px;
+  flex-wrap: wrap;
+  gap: 12px 24px;
   color: var(--muted);
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 13px;
 }
 
 .category-layout {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 48px;
-  padding: 48px 0;
+  grid-template-columns: 270px minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 56px);
+  padding: 42px 0 64px;
 }
 
 .category-sidebar {
@@ -268,34 +272,47 @@ watch(() => route.params.category, (newCat) => {
   align-self: start;
 }
 
+.category-content {
+  min-width: 0;
+}
+
 .sidebar-block {
-  margin-bottom: 32px;
+  margin-bottom: 30px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.sidebar-block:last-child {
+  border-bottom: 0;
 }
 
 .sidebar-block h3 {
-  font-size: 16px;
-  font-weight: 600;
+  margin: 0 0 12px;
   color: var(--ink);
-  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1.35;
 }
 
 .sidebar-block p {
-  font-size: 14px;
+  margin: 0;
   color: var(--muted);
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.8;
 }
 
 .category-scope {
-  list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .category-scope li {
-  font-size: 14px;
-  color: var(--muted);
-  padding: 6px 0;
   border-bottom: 1px solid var(--line);
+  padding: 9px 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .sidebar-links {
@@ -306,14 +323,15 @@ watch(() => route.params.category, (newCat) => {
 
 .sidebar-links a {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  font-size: 14px;
+  justify-content: space-between;
+  min-height: 42px;
+  border-radius: 8px;
+  padding: 8px 10px;
   color: var(--ink);
-  padding: 8px 12px;
-  min-height: 44px;
-  border-radius: 6px;
-  transition: background 0.2s;
+  font-size: 14px;
+  text-decoration: none;
+  transition: background 0.16s ease;
 }
 
 .sidebar-links a:hover {
@@ -321,134 +339,242 @@ watch(() => route.params.category, (newCat) => {
 }
 
 .sidebar-links small {
-  font-size: 12px;
   color: var(--muted);
+  font-size: 12px;
 }
 
 .category-tools {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
   border-bottom: 1px solid var(--line);
+  padding-bottom: 16px;
 }
 
 .sort-controls label {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
+  gap: 10px;
   color: var(--muted);
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 14px;
 }
 
 .sort-controls select {
-  padding: 6px 10px;
   min-height: 44px;
   border: 1px solid var(--line);
-  border-radius: 4px;
+  border-radius: 8px;
+  padding: 0 34px 0 12px;
   background: var(--paper);
   color: var(--ink);
   font-size: 14px;
 }
 
 .category-count {
-  font-size: 14px;
+  margin: 0;
   color: var(--muted);
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 13px;
 }
 
-.story-grid {
+.category-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
 }
 
-.story-card {
-  background: var(--paper);
+.category-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 260px;
   border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 24px;
+  border-radius: 16px;
+  padding: 22px;
+  background: rgba(255, 255, 255, 0.16);
   cursor: pointer;
-  transition: all 0.2s;
+  outline: 0;
+  transition: background 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
 }
 
-.story-card:hover {
+.category-card:hover,
+.category-card:focus-visible {
   border-color: var(--ink);
-  box-shadow: 0 4px 12px var(--shadow);
+  background: var(--soft);
+  box-shadow: 0 14px 34px rgba(25, 24, 22, 0.08);
   transform: translateY(-2px);
 }
 
-.story-card-header {
+.category-card-meta {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
-.story-date {
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.story-card h3 {
-  font-size: 18px;
-  font-weight: 600;
+.category-card-tag {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  max-width: 70%;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 10px;
   color: var(--ink);
-  margin: 0 0 8px;
-  line-height: 1.4;
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
 }
 
-.story-card p {
-  font-size: 14px;
+.category-card-date {
+  flex: 0 0 auto;
   color: var(--muted);
-  line-height: 1.6;
-  margin-bottom: 16px;
-}
-
-.story-card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.reading-time {
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
   font-size: 12px;
+  white-space: nowrap;
+}
+
+.category-card h3 {
+  min-width: 0;
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-size: clamp(20px, 2.1vw, 24px);
+  font-weight: 650;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.category-card p {
+  min-width: 0;
+  margin: 0 0 20px;
   color: var(--muted);
+  font-size: 15px;
+  line-height: 1.8;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.category-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  color: var(--muted);
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 13px;
+}
+
+.category-card-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0 12px;
+  color: var(--ink);
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .empty-state {
-  text-align: center;
   padding: 64px 24px;
+  text-align: center;
 }
 
 .empty-state h3 {
-  font-size: 24px;
+  margin: 0 0 12px;
   color: var(--ink);
-  margin-bottom: 12px;
+  font-size: 24px;
 }
 
 .empty-state p {
-  font-size: 16px;
+  margin: 0 0 24px;
   color: var(--muted);
-  margin-bottom: 24px;
+  font-size: 16px;
 }
 
-@media (max-width: 768px) {
-  .category-header h1 {
-    font-size: 32px;
-  }
-
+@media (max-width: 980px) {
   .category-layout {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 30px;
   }
 
   .category-sidebar {
     position: static;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
   }
 
-  .story-grid {
+  .sidebar-block {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .category-view {
+    padding: 0 16px;
+  }
+
+  .category-header {
+    padding: 28px 0 22px;
+  }
+
+  .category-description {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .category-sidebar {
     grid-template-columns: 1fr;
+  }
+
+  .category-tools {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sort-controls,
+  .sort-controls label,
+  .sort-controls select {
+    width: 100%;
+  }
+
+  .category-card-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .category-card {
+    min-height: auto;
+    padding: 18px;
+  }
+
+  .category-card h3 {
+    font-size: 20px;
+    -webkit-line-clamp: 4;
+  }
+
+  .category-card p {
+    font-size: 14px;
+    line-height: 1.7;
   }
 }
 </style>
