@@ -17,6 +17,31 @@
   line-height: 1.28;
 }
 
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 16px;
+}
+
+.card-tags span {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 8px;
+  color: var(--muted);
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.empty-text {
+  margin: 32px 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
 .article-mobile-header,
 .mobile-discovery {
   display: none;
