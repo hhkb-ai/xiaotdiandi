@@ -447,7 +447,7 @@ watch(() => route.params.category, (newCat) => {
   line-height: 1.45;
   letter-spacing: -0.02em;
   word-break: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
@@ -461,7 +461,7 @@ watch(() => route.params.category, (newCat) => {
   font-size: 15px;
   line-height: 1.8;
   word-break: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;

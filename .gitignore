@@ -7,3 +7,4 @@ test-vue-deploy/
 Thumbs.db
 *.bak
 *.tmp
+.claude/
