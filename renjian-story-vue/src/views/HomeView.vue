@@ -24,6 +24,63 @@
       </label>
     </section>
 
+    <!-- 移动端快捷发现：替代被隐藏的右侧栏 -->
+    <section class="mobile-discovery" aria-label="移动端快捷发现">
+      <div class="mobile-discovery-block">
+        <div class="mobile-discovery-head">
+          <h2>快速分类</h2>
+          <span>横向滑动查看</span>
+        </div>
+        <div class="mobile-category-strip" aria-label="细分主题">
+          <router-link
+            v-for="item in mobileCategoryLinks"
+            :key="item.name"
+            :to="`/category/${item.name}`"
+            class="mobile-category-chip"
+            @click="applyCategory(item.name)"
+          >
+            <span aria-hidden="true">{{ item.icon }}</span>
+            <strong>{{ item.name }}</strong>
+          </router-link>
+        </div>
+      </div>
+
+      <div class="mobile-discovery-block" v-if="sidebarPicks.length">
+        <div class="mobile-discovery-head">
+          <h2>精选推荐</h2>
+          <a href="#editorPicks">查看全部</a>
+        </div>
+        <div class="mobile-pick-list">
+          <a
+            v-for="story in sidebarPicks.slice(0, 3)"
+            :key="story.id"
+            href="#"
+            class="mobile-pick-item"
+            @click.prevent="openStory(story.id)"
+          >
+            <span>{{ story.category }}</span>
+            <strong>{{ story.title }}</strong>
+          </a>
+        </div>
+      </div>
+
+      <div class="mobile-discovery-block">
+        <div class="mobile-discovery-head">
+          <h2>热门关键词</h2>
+          <span>点击筛选</span>
+        </div>
+        <div class="mobile-keyword-strip" aria-label="热门关键词">
+          <a
+            v-for="kw in sidebarKeywords"
+            :key="kw"
+            href="#stories"
+            class="mobile-keyword-chip"
+            @click.prevent="applyKeyword(kw)"
+          >{{ kw }}</a>
+        </div>
+      </div>
+    </section>
+
     <!-- 主体双栏布局 -->
     <div class="feed-layout" id="stories">
       <!-- 左侧：内容流 -->
@@ -211,20 +268,31 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useStories } from '@/composables/useStories'
 
 const router = useRouter()
 const route = useRoute()
 const {
-  stories, filteredStories, sortedStories, heroStories, qualityStories,
-  category, keyword, sort, categoryGroups,
+  stories, filteredStories, sortedStories, qualityStories,
+  category, sort,
   applyCategory, applyKeyword
 } = useStories()
 
 const searchQuery = ref('')
 const archiveExpanded = ref(false)
+
+const mobileCategoryLinks = [
+  { name: '校园生活', icon: '🏫' },
+  { name: '学习成长', icon: '📚' },
+  { name: '实用知识', icon: '💡' },
+  { name: '安全与情绪', icon: '🛡️' },
+  { name: '求职复盘', icon: '💼' },
+  { name: '毕业与回忆', icon: '🎓' },
+  { name: '活动与关系', icon: '🤝' },
+  { name: '网络梗知识', icon: '🌐' }
+]
 
 const keywordList = [
   '宿舍', '校园生活', '考试周', '社团', '毕业', '开学',
