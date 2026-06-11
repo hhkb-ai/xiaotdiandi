@@ -279,7 +279,7 @@
               <div
                 v-for="related in relatedStories"
                 :key="related.id"
-                class="feature-card related-card"
+                class="related-card"
                 @click="openStory(related.id)"
               >
                 <div class="card-tags">
