@@ -1,4 +1,4 @@
-/* QA layout fixes: content typography, card clipping, and touch targets */
+/* QA layout fixes: content typography, card clipping, mobile discovery, and isolated related cards */
 
 .feed-card-title {
   display: -webkit-box;
@@ -17,11 +17,184 @@
   line-height: 1.28;
 }
 
-.article-mobile-header {
+.article-mobile-header,
+.mobile-discovery {
   display: none;
 }
 
+.related-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 160px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.16);
+  cursor: pointer;
+  outline: 0;
+  transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.related-card:hover,
+.related-card:focus-visible {
+  border-color: var(--ink);
+  background: var(--soft);
+  box-shadow: 0 10px 26px rgba(25, 24, 22, 0.08);
+  transform: translateY(-1px);
+}
+
+.related-card h4 {
+  min-width: 0;
+  margin: 8px 0 8px;
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 650;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.related-card p {
+  min-width: 0;
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
 @media (max-width: 780px) {
+  .mobile-discovery {
+    display: grid;
+    gap: 14px;
+    border-bottom: 1px solid var(--line);
+    padding: 14px 0 16px;
+  }
+
+  .mobile-discovery-block {
+    display: grid;
+    gap: 10px;
+  }
+
+  .mobile-discovery-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .mobile-discovery-head h2 {
+    margin: 0;
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 750;
+    line-height: 1.3;
+  }
+
+  .mobile-discovery-head span,
+  .mobile-discovery-head a {
+    color: var(--muted);
+    font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 12px;
+    font-weight: 650;
+  }
+
+  .mobile-category-strip,
+  .mobile-keyword-strip {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+
+  .mobile-category-strip::-webkit-scrollbar,
+  .mobile-keyword-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-category-chip,
+  .mobile-keyword-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    min-height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    color: var(--ink);
+    font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+    text-decoration: none;
+  }
+
+  .mobile-category-chip {
+    gap: 6px;
+    padding: 0 12px;
+    font-size: 13px;
+  }
+
+  .mobile-category-chip strong {
+    font-weight: 750;
+    white-space: nowrap;
+  }
+
+  .mobile-keyword-chip {
+    padding: 0 13px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .mobile-pick-list {
+    display: grid;
+    gap: 8px;
+  }
+
+  .mobile-pick-item {
+    display: grid;
+    gap: 4px;
+    min-height: 54px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.12);
+    text-decoration: none;
+  }
+
+  .mobile-pick-item span {
+    color: var(--muted);
+    font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .mobile-pick-item strong {
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 650;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
   .article-mobile-header {
     display: block;
     margin: 0 0 22px;
@@ -59,5 +232,18 @@
     color: var(--muted);
     font-size: 15px;
     line-height: 1.75;
+  }
+
+  .related-card {
+    min-height: 120px;
+    padding: 12px;
+  }
+
+  .related-card h4 {
+    font-size: 16px;
+  }
+
+  .related-card p {
+    font-size: 13px;
   }
 }
